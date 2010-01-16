@@ -2,10 +2,20 @@
   (:use :cl :cffi)
   (:export #:sdl-event
 	   #:tailq-head
-	   #:tqh-first
+	     #:tqh-first
 	   #:tailq-entry
-	   #:tqe-next
-	   #:display))
+	     #:tqe-next
+	   #:rect2
+	   #:display
+	     #:opengl
+	     #:windows
+	   #:widget
+	     #:r-view
+	   #:window
+	     #:visible))
 
 (defpackage agar
-  (:use :cl :cffi :agar-cffi))
+  (:use :cl :cffi :agar-cffi)
+  (:import-from lispbuilder-sdl
+		#:foreign-object
+		#:fp))

@@ -43,3 +43,12 @@
 
 (defcfun ("AG_BeginRendering" begin-rendering) :void)
 (defcfun ("AG_EndRendering" end-rendering) :void)
+(defcfun ("AG_WidgetDraw" widget-draw) :void (widget :pointer))
+(defcfun ("AG_ViewUpdateFB" view-update-fb) :void (rect :pointer))
+
+(defun window-draw (window)
+  (unless (= 0 (foreign-slot-value window 'agar-cffi::window 'agar-cffi::visible))
+    (widget-draw window)
+    (when (= 0 (foreign-slot-value *view* 'agar-cffi:display 'agar-cffi:opengl))
+      (view-update-fb (foreign-slot-value window 'agar-cffi:widget 'agar-cffi:r-view)))))
+      
