@@ -12,9 +12,9 @@
   ((error-message :initarg :message :initform (get-error)))
   (:report (lambda (condition stream)
 	     (format stream "Error in agar: ~a" (slot-value condition 'error-message))))
-  (:documentation "Ein bei Benutzung von Agar aufgetretener Fehler"))
+  (:documentation "An error that occured when using Agar"))
 
-(defvar *initialized* nil "Gibt an, ob init-core schon aufgerufen wurde")
+(defvar *initialized* nil "Set to t when init-core is called")
 
 (defbitfield init-flags
   (:verbose #x1)
@@ -24,7 +24,7 @@
 ;; HACK: callback schreiben, damit *initialized* ggf. auch wieder nil wird
 (defun init-core (progname flags)
   "int AG_InitCore(const char* progname, uint flags)
-Initislisiert Agar, wenn dies nicht schon vorher getan wurde"
+Initializes Agar if not done so previously"
   (unless *initialized* 
     ;; progname wird von AG_InitCore kopiert, daher muss der nicht aufbewahrt werden
     (agar-funcall "AG_InitCore" :string progname init-flags flags))
@@ -34,8 +34,7 @@ Initislisiert Agar, wenn dies nicht schon vorher getan wurde"
 
 (defun process-event (sdl-event)
   "int AG_ProcessEvent(SDL_Event *ev)
-Gibt 1 zurück, wenn das Ereignis irgendwie verarbeitet wurde,
--1, wenn die Anwendung beendet wird."
+Returns 1 if the event was processed somehow, -1 if the application exits."
   (foreign-funcall "AG_ProcessEvent" :pointer sdl-event :int))
 
 (defun tailq-to-list (tailq-head field)

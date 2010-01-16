@@ -16,7 +16,7 @@
 
 (defcvar ("agView" *view*) agar-cffi::display)
 
-(defvar *video-initialized* nil "Gibt an, ob init-video schon aufgerufen wurde")
+(defvar *video-initialized* nil "Set to t when init-video is called")
 
 (defun init-video (w h depth &rest flags)
   (unless *video-initialized* 
