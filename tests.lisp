@@ -1,0 +1,26 @@
+(in-package agar)
+
+(defun init-display-test ()
+  (with-agar ("init-display-test")
+    (with-video (320 240 32 :resizable)
+      (text-msg :info "Hello, world!")
+      (event-loop))))
+
+(defun custom-event-loop ()
+  (with-foreign-objects ((ev 'agar-cffi::sdl-event ))
+    (loop
+       (begin-rendering)
+       (dolist (win (tailq-to-list (foreign-slot-pointer *view* 'agar-cffi::display 'agar-cffi::windows) 'agar-cffi::windows))
+	 (window-draw win))
+       (end-rendering)
+       (when (not (= 0 (foreign-funcall "SDL_PollEvent" agar-cffi::sdl-event (get-var-pointer 'ev) :int)))
+	 (process-event ev)))))
+
+(defun custom-event-loop-test ()
+  (with-foreign-objects ((win :pointer))
+    (with-agar ("custom-event-loop-test")
+      (with-video (320 240 32 :resizable)
+	(setf win (foreign-funcall "AG_WindowNew" :int 0 :pointer))
+	(foreign-funcall "AG_LabelNewStatic" :pointer win :int 0 :string "Hello world!")
+	(foreign-funcall "AG_WindowShow" :pointer win)
+	(custom-event-loop)))))
