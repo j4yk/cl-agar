@@ -20,6 +20,7 @@
 			:components ((:file core)
 				     (:file queues)
 				     (:file object)))
-	       (:file gui :depends-on (core))
+	       (:module gui :depends-on (core)
+			:components ((:file gui)))
 	       (:file lispy :depends-on (core gui))
 	       (:file tests :depends-on (core gui lispy))))
