@@ -27,6 +27,12 @@
   "int AG_InitVideoSDL(SDL_Surface *display, Uint flags)"
   (agar-funcall "AG_InitVideoSDL" :pointer display video-flags flags))
 
+(defun destroy-gui ()
+  "void AG_DestroyGUI();"
+  (unwind-protect
+       (foreign-funcall "AG_DestroyGUI" :void)
+    (setq *video-initialized* nil)))
+
 (defcenum text-msg-title
   (:error)
   (:warning)
