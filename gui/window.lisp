@@ -12,5 +12,14 @@
 
 (defctype window :pointer "AG_Window Pointer")
 
-(defcfun ("AG_WindowNew" window-new) window
-  (flags window-flags))
+(defun window-new (&rest flags)
+  (foreign-funcall "AG_WindowNew" window-flags flags window))
+
+(defun window-set-caption (window format-control-str &rest format-args)
+  (foreign-funcall "AG_WindowSetCaption"
+		   window window
+		   :string (apply #'format nil format-control-str format-args)
+		   :void))
+
+(defcfun ("AG_WindowShow" window-show) :void
+  (window window))
