@@ -10,7 +10,8 @@
   :nomove :noclipping
   :modkeyevents)
 
-(defctype window :pointer "AG_Window Pointer")
+;; (defctype window :pointer "AG_Window Pointer")
+(defctype window-pointer (:pointer window) "AG_Window*")
 
 (defun window-new (&rest flags)
   (foreign-funcall "AG_WindowNew" window-flags flags window))
