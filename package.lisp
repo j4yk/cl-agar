@@ -1,6 +1,7 @@
 (defpackage agar-cffi
   (:use :cl :cffi)
   (:export #:sdl-event
+	   #:object-class
 	   #:tailq-head
 	     #:tqh-first
 	   #:tailq-entry
@@ -15,6 +16,7 @@
 	     #:visible))
 
 (defpackage agar
+  (:nicknames :ag)
   (:use :cl :cffi :agar-cffi)
   (:import-from lispbuilder-sdl
 		#:foreign-object
