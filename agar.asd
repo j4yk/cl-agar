@@ -23,6 +23,7 @@
 				     (:file object)))
 	       (:module gui :depends-on (core)
 			:components ((:file gui)
+				     (:file display)
 				     (:file widget)
 				     (:file label)
 				     (:file window)))
