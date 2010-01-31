@@ -33,12 +33,13 @@ Initializes Agar if not done so previously"
 	(agar-funcall "AG_InitCore" :string progname init-flags flags)
 	(setq *initialized* t))))
 
-(defun destroy ()
-  "void AG_Destroy()
-frees all of Agar's resources"
-  (unwind-protect
-       (foreign-funcall "AG_Destroy" :void)
-    (setq *initialized* nil)))
+;; (defun destroy ()
+;;   "void AG_Destroy()
+;; frees all of Agar's resources"
+;;   (unwind-protect
+;;        (foreign-funcall "AG_Destroy" :void)
+;;     (setq *initialized* nil)))
+;; commented out to avoid trouble when this was called
 
 (defun process-event (sdl-event)
   "int AG_ProcessEvent(SDL_Event *ev)
