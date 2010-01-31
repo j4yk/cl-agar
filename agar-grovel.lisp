@@ -41,5 +41,6 @@
 	 (r-view "rView" :type rect2))
 
 (cstruct window "AG_Window"
+	 (windows "windows" :type tailq-entry)
 	 (visible "visible" :type :int))
 	 
