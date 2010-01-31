@@ -13,6 +13,7 @@
   :license "BSD"
   :depends-on (:cffi :lispbuilder-sdl)
   :components ((:file "package")
+	       (:file wrapper-classes :depends-on (package))
 	       (:file "libraries" :depends-on (package))
 	       (cffi-grovel:grovel-file agar-grovel :depends-on (package))
 	       (:file "utils" :depends-on (libraries))
