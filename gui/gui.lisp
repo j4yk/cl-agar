@@ -14,18 +14,18 @@
   :opengl-or-sdl
   :overlay)
 
-(defcvar ("agView" *view*) agar-cffi::display)
-
 (defvar *video-initialized* nil "Set to t when init-video is called")
 
 (defun init-video (w h depth &rest flags)
   (unless *video-initialized* 
-    (agar-funcall "AG_InitVideo" :int w :int h :int depth video-flags flags)
+    (foreign-funcall "AG_InitVideo" :int w :int h :int depth video-flags flags
+		     agar-code)
     (setq *video-initialized* t)))
 
 (defun init-video-sdl (display &rest flags)
   "int AG_InitVideoSDL(SDL_Surface *display, Uint flags)"
-  (agar-funcall "AG_InitVideoSDL" :pointer display video-flags flags))
+  (foreign-funcall "AG_InitVideoSDL" :pointer display video-flags flags
+		   agar-code))
 
 (defun destroy-gui ()
   "void AG_DestroyGUI();"
@@ -55,6 +55,5 @@
 (defun window-draw (window)
   (unless (= 0 (foreign-slot-value window 'agar-cffi::window 'agar-cffi::visible))
     (widget-draw window)
-    (when (= 0 (foreign-slot-value *view* 'agar-cffi:display 'agar-cffi:opengl))
-      (view-update-fb (foreign-slot-value window 'agar-cffi:widget 'agar-cffi:r-view)))))
-      
+    (when (= 0 (foreign-slot-value *view* 'agar-cffi::display 'agar-cffi::opengl))
+      (view-update-fb (foreign-slot-value window 'agar-cffi::widget 'agar-cffi::r-view)))))

@@ -8,3 +8,5 @@
 	    :foreign-type '(tailqueue-head :type window)))
   (:documentation "Wrapper class for AG_Display struct")
   (:foreign-type ag-cffi::display))
+
+(defcvar ("agView" *view*) display "Agar Context")
