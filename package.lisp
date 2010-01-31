@@ -1,4 +1,5 @@
 (defpackage agar-cffi
+  (:nicknames :ag-cffi)
   (:use :cl :cffi)
   (:export #:sdl-event
 	   #:object-class
@@ -17,7 +18,7 @@
 
 (defpackage agar
   (:nicknames :ag)
-  (:use :cl :cffi :agar-cffi)
+  (:use :cl :cffi)
   (:import-from lispbuilder-sdl
 		#:foreign-object
 		#:fp)
