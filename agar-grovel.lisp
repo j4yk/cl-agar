@@ -29,6 +29,11 @@
 (cstruct rect2 "AG_Rect2")
 	   
 (cstruct display "AG_Display"
+	 (w "w" :type :int)
+	 (h "h" :type :int)
+	 (depth "depth" :type :int)
+	 (rcur "rCur" :type :int)
+	 (rnom "rNom" :type :uint)
 	 (opengl "opengl" :type :int)
 	 (windows "windows" :type tailq-head))
 
