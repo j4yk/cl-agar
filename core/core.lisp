@@ -2,8 +2,7 @@
 
 (defun get-error ()
   "const char* AG_GetError()"
-  (let ((pmsg (foreign-funcall "AG_GetError" charpointer)))
-    (when pmsg (foreign-string-to-lisp pmsg))))
+  (foreign-funcall "AG_GetError" :string))
 
 (define-condition agar-error (error)
   ((error-message :initarg :message :initform (get-error)))
