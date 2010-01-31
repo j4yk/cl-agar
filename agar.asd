@@ -16,7 +16,7 @@
 	       (:file wrapper-classes :depends-on (package))
 	       (:file "libraries" :depends-on (package))
 	       (cffi-grovel:grovel-file agar-grovel :depends-on (package))
-	       (:module core :depends-on (libraries agar-grovel)
+	       (:module core :depends-on (libraries agar-grovel wrapper-classes)
 			:components ((:file core)
 				     (:file queues)
 				     (:file object)))
