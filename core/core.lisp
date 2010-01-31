@@ -1,8 +1,5 @@
 (in-package agar)
 
-(defctype charpointer :pointer "char*")
-(defctype agar-code :int)		; Fehlerstatus
-
 (defun get-error ()
   "const char* AG_GetError()"
   (let ((pmsg (foreign-funcall "AG_GetError" charpointer)))
@@ -14,7 +11,15 @@
 	     (format stream "Error in agar: ~a" (slot-value condition 'error-message))))
   (:documentation "An error that occured when using Agar"))
 
+(define-foreign-type agar-code-type ()
+  ()
+  (:actual-type :int)
+  (:simple-parser agar-code))
 
+(defmethod translate-from-foreign (value (type agar-code-type))
+  (unless (= value 0)
+    (error 'agar-error :message (get-error)))
+  (values))
 
 (defvar *initialized* nil "Set to t when init-core is called")
 
@@ -23,14 +28,17 @@
   :create-datadir
   :no-cfg-autoload)
 
-;; HACK: callback schreiben, damit *initialized* ggf. auch wieder nil wird
+;; HACK: callback schreiben, damit *initialized* ggf. auch wieder nil wird?
 (defun init-core (progname flags)
   "int AG_InitCore(const char* progname, uint flags)
 Initializes Agar if not done so previously"
   (if *initialized*
       (warn "Agar has been previously initialized!")
       (progn
-	(agar-funcall "AG_InitCore" :string progname init-flags flags)
+	(foreign-funcall "AG_InitCore"
+			 :string progname
+			 init-flags flags
+			 agar-code)
 	(setq *initialized* t))))
 
 ;; (defun destroy ()
