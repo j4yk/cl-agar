@@ -1,8 +1,10 @@
 (in-package agar)
 
-(defstruct tailqueue-head fp first)
+(defstruct tailqueue-head fp first last)
 
-(defstruct tailqueue-entry fp next)
+(defstruct tailqueue-entry fp next prev)
+
+(define-symbol-macro +tailqueue-end+ nil)
 
 (define-foreign-type tailqueue-head-type ()
   ((element-type :accessor element-type :initarg :type))
@@ -39,6 +41,7 @@
 (defmethod translate-to-foreign (tailq-entry-struct (type tailqueue-entry-type))
   (tailqueue-entry-fp tailq-entry-struct))
 
+;; user functions from here
 
 (defun tailqueue-entry-from-slot (ptr type entry-slot-name)
   "Returns the tailqueue-entry struct that is yield by the conversion
@@ -53,6 +56,16 @@ the element (pointer) that was passed to that function."
 (defun tailqueue-head-from-slot (ptr type element-type head-slot-name)
   (convert-from-foreign (foreign-slot-value ptr type head-slot-name)
 			`(tailqueue-head :type ,element-type)))
+
+(defun tailqueue-first (tailqueue-head)
+  (tailqueue-head-first tailqueue-head))
+
+(defun tailqueue-end (tailqueue-head)
+  (declare (ignore tailqueue-head))
+  nil)					; there is a foreign macro with an equal lambda list...
+
+(defun tailqueue-empty-p (tailqueue-head) 
+  (eq (tailqueue-first tailqueue-head) (tailqueue-end tailqueue-head)))
 
 (defun tailqueue-to-list (tailqueue-head entry-accessor-function)
   (do* ((element (tailqueue-head-first tailqueue-head)
