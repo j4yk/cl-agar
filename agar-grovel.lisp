@@ -34,13 +34,13 @@
 	 (depth "depth" :type :int)
 	 (rcur "rCur" :type :int)
 	 (rnom "rNom" :type :uint)
-	 (opengl "opengl" :type :int)
+	 (opengl "opengl" :type :boolean)
 	 (windows "windows" :type tailq-head))
 
 (cstruct widget "AG_Widget"
-	 (r-view "rView" :type rect2))
+	 (rview "rView" :type rect2))
 
 (cstruct window "AG_Window"
 	 (windows "windows" :type tailq-entry)
-	 (visible "visible" :type :int))
+	 (visible "visible" :type :boolean))
 	 
