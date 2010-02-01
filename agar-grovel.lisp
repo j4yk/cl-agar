@@ -13,18 +13,18 @@
 
 (cstruct sdl-event "SDL_Event")
 
-(cstruct tailq-head "AG_TAILQ_HEAD(,ag_object)"
+(cstruct tailqueue-head "AG_TAILQ_HEAD(,ag_object)"
 	 (tqh-first "tqh_first" :type :pointer)
 	 (tqh-last "tqh_last" :type :pointer))
 
-(cstruct tailq-entry "AG_TAILQ_ENTRY(ag_object)"
+(cstruct tailqueue-entry "AG_TAILQ_ENTRY(ag_object)"
 	 (tqe-next "tqe_next" :type :pointer)
 	 (tqe-prev "tqe_prev" :type :pointer))
 
 (cstruct object-class "AG_ObjectClass"
 	 (name "name" :type :pointer)
-	 (subclasses "subclasses" :type tailq-entry)
-	 (sub "sub" :type tailq-head))
+	 (subclasses "subclasses" :type tailqueue-entry)
+	 (sub "sub" :type tailqueue-head))
 
 (cstruct rect2 "AG_Rect2")
 	   
@@ -35,12 +35,12 @@
 	 (rcur "rCur" :type :int)
 	 (rnom "rNom" :type :uint)
 	 (opengl "opengl" :type :boolean)
-	 (windows "windows" :type tailq-head))
+	 (windows "windows" :type tailqueue-head))
 
 (cstruct widget "AG_Widget"
 	 (rview "rView" :type rect2))
 
 (cstruct window "AG_Window"
-	 (windows "windows" :type tailq-entry)
+	 (windows "windows" :type tailqueue-entry)
 	 (visible "visible" :type :boolean))
 	 

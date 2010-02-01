@@ -5,3 +5,5 @@
 		   :foreign-slot-name ag-cffi::rview :foreign-type ag-cffi::rect2))
   (:documentation "Wrapper class for AG_Widget")
   (:foreign-type ag-cffi::widget))
+
+(defcfun ("AG_WidgetDraw" widget-draw) :void (widget widget))

@@ -18,11 +18,13 @@
 		(dolist (win (tailqueue-to-list (windows *view*) #'windows))
 		  (window-draw win))))
 	     ((not (= 0 (foreign-funcall "SDL_PollEvent" agar-cffi::sdl-event ev :int)))
+	      (format t "~%event")
 	      ;; send all SDL events to AGAR GUI
 	      (when (= -1 (process-event ev))
 		;; process event returns -1 if the app is going to be quit
 		(return)))
 	     ((not (null (tailqueue-first *timeout-object-queue*))) ; advance the timing wheels
+	      (format t "~%timeout")
 	      (process-timeout tr2))
 	     ((> (rcur *view*) *idle-thresh*)
 	      ;; idle the rest of the time

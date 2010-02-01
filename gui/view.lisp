@@ -9,9 +9,16 @@
    (opengl :reader opengl-p :initarg :opengl
 	   :foreign-slot-name ag-cffi::opengl)
    (windows :accessor windows :initarg :windows
-	    :foreign-slot-name ag-cffi::windows
-	    :foreign-type (tailqueue-head :type window)))
+   	    :foreign-slot-name ag-cffi::windows
+   	    :foreign-type (tailqueue-head :type window)))
   (:documentation "Wrapper class for AG_Display struct")
   (:foreign-type ag-cffi::display))
 
-(defagarvar ("agView" *view*) display "Agar Context")
+(let ((fp (null-pointer))
+      (value nil))
+  (defcvar ("agView" %*view*) display "Agar Device Context")
+  (defun get-*view* () (if (sb-sys:sap= (get-var-pointer '%*view*) fp)
+			   value
+			   (setf fp (get-var-pointer '%*view*)
+				 value %*view*)))
+  (define-symbol-macro *view* (get-*view*)))

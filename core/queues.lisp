@@ -16,12 +16,17 @@
 (defmethod translate-from-foreign (tqh-pointer (type tailqueue-head-type))
   (if (null-pointer-p tqh-pointer)
       nil
-      (let ((element-ptr (foreign-slot-value tqh-pointer 'ag-cffi::tailq-head 'ag-cffi::tqh-first)))
+      (let ((first-element-ptr (foreign-slot-value tqh-pointer 'ag-cffi::tailqueue-head 'ag-cffi::tqh-first)) ; *element-type
+	    (last-element-ptr (foreign-slot-value tqh-pointer 'ag-cffi::tailqueue-head 'ag-cffi::tqh-last))) ; **element-type
 	(make-tailqueue-head
 	 :fp tqh-pointer
-	 :first (if (null-pointer-p element-ptr)
+	 :first (if (null-pointer-p first-element-ptr)
 		    nil
-		    (convert-from-foreign element-ptr (element-type type)))))))
+		    (convert-from-foreign first-element-ptr (element-type type)))
+	 ;; :last (if (null-pointer-p last-element-ptr)
+	 ;; 	   nil
+	 ;; 	   (convert-from-foreign last-element-ptr (element-type type)))
+	 ))))
 
 (defmethod translate-to-foreign (tailq-head-struct (type tailqueue-head-type))
   (tailqueue-head-fp tailq-head-struct))				 
@@ -36,7 +41,7 @@
 (defmethod translate-from-foreign (tqe-pointer (type tailqueue-entry-type))
   (if (null-pointer-p tqe-pointer)
       nil
-      (let ((element-ptr (foreign-slot-value tqe-pointer 'ag-cffi::tailq-entry 'ag-cffi::tqe-next)))
+      (let ((element-ptr (foreign-slot-value tqe-pointer 'ag-cffi::tailqueue-entry 'ag-cffi::tqe-next)))
 	(make-tailqueue-entry :fp tqe-pointer
 			      :next (if (null-pointer-p element-ptr)
 					nil
@@ -44,6 +49,27 @@
 
 (defmethod translate-to-foreign (tailq-entry-struct (type tailqueue-entry-type))
   (tailqueue-entry-fp tailq-entry-struct))
+
+;; for cases when you don't have the pointer but the struct itself
+
+;; (define-foreign-type plain-tailqueue-head-type (tailqueue-head-type)
+;;   ()
+;;   (:actual-type ag-cffi::tailq-head)
+;;   (:simple-parser plain-tailqueue-head))
+
+;; (defmethod translate-from-foreign (struct (type plain-tailqueue-head-type))
+;;   "Convert foreign struct of type ag-cffi::tailq-head to a lispy one"
+;;   (make-tailqueue-head :fp struct
+;; 		       :first (convert-from-foreign
+;; 			       (foreign-slot-value struct
+;; 						   'ag-cffi::tailq-head
+;; 						   'ag-cffi::tqh-first)
+;; 			       (element-type type))
+;; 		       :last (convert-from-foreign
+;; 			      (foreign-slot-value struct
+;; 						  'ag-cffi::tailq-head
+;; 						  'ag-cffi::tqh-last)
+;; 			      (element-type type))))
 
 ;; user functions from here
 

@@ -49,5 +49,4 @@
 
 (defcfun ("AG_BeginRendering" begin-rendering) :void)
 (defcfun ("AG_EndRendering" end-rendering) :void)
-(defcfun ("AG_WidgetDraw" widget-draw) :void (widget :pointer))
 (defcfun ("AG_ViewUpdateFB" view-update-fb) :void (rect :pointer))
