@@ -6,6 +6,8 @@
 			 :foreign-slot-name ag-cffi::rnom)
    (current-refresh-rate :reader current-refresh-rate :reader rcur :initarg :rcur
 			 :foreign-slot-name ag-cffi::rcur)
+   (opengl :reader opengl-p :initarg :opengl
+	   :foreign-slot-name ag-cffi::opengl)
    (windows :accessor windows :initarg :windows
 	    :foreign-slot-name ag-cffi::windows
 	    :foreign-type (tailqueue-head :type window)))
