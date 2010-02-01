@@ -19,6 +19,7 @@
 	       (:module core :depends-on (libraries agar-grovel wrapper-classes)
 			:components ((:file core)
 				     (:file queues)
+				     (:file timeout)
 				     (:file object)))
 	       (:module gui :depends-on (core)
 			:components ((:file gui)
