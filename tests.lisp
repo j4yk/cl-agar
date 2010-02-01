@@ -7,20 +7,29 @@
       (event-loop))))
 
 (defun custom-event-loop ()
-  (with-foreign-objects ((ev 'agar-cffi::sdl-event ))
-    (loop
-       (begin-rendering)
-       (dolist (win (tailq-to-list (foreign-slot-pointer *view* 'agar-cffi::display 'agar-cffi::windows) 'window 'agar-cffi::windows))
-	 (window-draw win))
-       (end-rendering)
-       (when (not (= 0 (foreign-funcall "SDL_PollEvent" agar-cffi::sdl-event (get-var-pointer 'ev) :int)))
-	 (process-event ev)))))
+  ;; http://wiki.libagar.org/wiki/Custom_event_loop
+  (with-foreign-objects ((ev 'agar-cffi::sdl-event)) ; actually a pointer
+    (let ((tr1 (foreign-funcall "SDL_GetTicks" :uint32)))
+      (loop
+	 (let ((tr2 (foreign-funcall "SDL_GetTicks" :uint32)))
+	   (cond
+	     ((>= (- tr2 tr1) (rnom *view*)) ; time to redraw?
+	      (render
+		(dolist (win (tailqueue-to-list (windows *view*) #'windows))
+		  (window-draw win))))
+	     ((not (= 0 (foreign-funcall "SDL_PollEvent" agar-cffi::sdl-event ev :int)))
+	      ;; send all SDL events to AGAR GUI
+	      (when (= -1 (process-event ev))
+		;; process event returns -1 if the app is going to be quit
+		(return)))
+	     ((not (null (tailqueue-first *timeout-object-queue*))) ; advance the timing wheels
+	      (process-timeout tr2))
+	     ((> (rcur *view*) *idle-thresh*)
+	      ;; idle the rest of the time
+	      (foreign-funcall "SDL_Delay" :int (- (rcur *view*) *idle-thresh*)))))))))
 
 (defun custom-event-loop-test ()
-  (with-foreign-objects ((win :pointer))
-    (with-agar-core ("custom-event-loop-test")
-      (with-video (320 240 32 :resizable)
-	(setf win (foreign-funcall "AG_WindowNew" :int 0 :pointer))
-	(foreign-funcall "AG_LabelNewStatic" :pointer win :int 0 :string "Hello world!")
-	(foreign-funcall "AG_WindowShow" :pointer win)
-	(custom-event-loop)))))
+  (with-agar-core ("custom-event-loop-test")
+    (with-video (320 300 32 :resizable)
+      (text-msg :info "Hello, world!")
+      (custom-event-loop))))
