@@ -10,9 +10,9 @@
   :nomove :noclipping
   :modkeyevents)
 
-(define-wrapper-class window ()
+(define-wrapper-class window (widget)
   ((windows :accessor windows :documentation "TAILQ_ENTRY for AG_Windows" :initarg :windows
-	    :foreign-slot-name 'ag-cffi::windows :foreign-type '(tailqueue-entry :type window)))
+	    :foreign-slot-name ag-cffi::windows :foreign-type (tailqueue-entry :type window)))
   (:documentation "Wrapper class for AG_Window")
   (:foreign-type ag-cffi::window))
 
