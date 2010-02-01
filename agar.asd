@@ -13,10 +13,11 @@
   :license "BSD"
   :depends-on (:cffi :lispbuilder-sdl)
   :components ((:file "package")
+	       (:file utils :depends-on (package))
 	       (:file wrapper-classes :depends-on (package))
 	       (:file "libraries" :depends-on (package))
 	       (cffi-grovel:grovel-file agar-grovel :depends-on (package))
-	       (:module core :depends-on (libraries agar-grovel wrapper-classes)
+	       (:module core :depends-on (utils libraries agar-grovel wrapper-classes)
 			:components ((:file core)
 				     (:file queues)
 				     (:file timeout)
