@@ -14,12 +14,14 @@
   (make-instance 'tailqueue-head-type :type type))
 
 (defmethod translate-from-foreign (tqh-pointer (type tailqueue-head-type))
-  (let ((element-ptr (foreign-slot-value tqh-pointer 'ag-cffi::tailq-head 'ag-cffi::tqh-first)))
-    (make-tailqueue-head
-     :fp tqh-pointer
-     :first (if (null-pointer-p element-ptr)
-		nil
-		(convert-from-foreign element-ptr (element-type type))))))
+  (if (null-pointer-p tqh-pointer)
+      nil
+      (let ((element-ptr (foreign-slot-value tqh-pointer 'ag-cffi::tailq-head 'ag-cffi::tqh-first)))
+	(make-tailqueue-head
+	 :fp tqh-pointer
+	 :first (if (null-pointer-p element-ptr)
+		    nil
+		    (convert-from-foreign element-ptr (element-type type)))))))
 
 (defmethod translate-to-foreign (tailq-head-struct (type tailqueue-head-type))
   (tailqueue-head-fp tailq-head-struct))				 
@@ -32,11 +34,13 @@
   (make-instance 'tailqueue-entry-type :type type))
 
 (defmethod translate-from-foreign (tqe-pointer (type tailqueue-entry-type))
-  (let ((element-ptr (foreign-slot-value tqe-pointer 'ag-cffi::tailq-entry 'ag-cffi::tqe-next)))
-    (make-tailqueue-entry :fp tqe-pointer
-			  :next (if (null-pointer-p element-ptr)
-				    nil
-				    (convert-from-foreign element-ptr (element-type type))))))
+  (if (null-pointer-p tqe-pointer)
+      nil
+      (let ((element-ptr (foreign-slot-value tqe-pointer 'ag-cffi::tailq-entry 'ag-cffi::tqe-next)))
+	(make-tailqueue-entry :fp tqe-pointer
+			      :next (if (null-pointer-p element-ptr)
+					nil
+					(convert-from-foreign element-ptr (element-type type)))))))
 
 (defmethod translate-to-foreign (tailq-entry-struct (type tailqueue-entry-type))
   (tailqueue-entry-fp tailq-entry-struct))
@@ -67,9 +71,21 @@ the element (pointer) that was passed to that function."
 (defun tailqueue-empty-p (tailqueue-head) 
   (eq (tailqueue-first tailqueue-head) (tailqueue-end tailqueue-head)))
 
+(defun tailqueue-next (element accessor)
+  "Returns the next element of the queue.
+Accessor is either a function or a symbol.
+If it is a function, its return value when called with element as the
+  only argument is assumed to be the tailqueue-entry of that element.
+If it is a symbol, the slot of element with that name is assumed to
+  contain the tailqueue-entry."
+  (tailqueue-entry-next (cond ((functionp accessor) (funcall accessor element))
+			      ((symbolp accessor) (slot-value element accessor))
+			      (t (error "tailqueue-next cannot handle accessors of type ~s"
+					(type-of accessor))))))
+
 (defun tailqueue-to-list (tailqueue-head entry-accessor-function)
   (do* ((element (tailqueue-head-first tailqueue-head)
-		 (tailqueue-entry-next (funcall entry-accessor-function element)))
+		 (tailqueue-next element entry-accessor-function))
 	(list (when element (list element))
-	      (push element list)))
+	      (if element (push element list) list)))
        ((null element) list)))
