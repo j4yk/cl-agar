@@ -51,13 +51,15 @@
 				    ',foreign-object-type
 				    ',foreign-slot-name)))
 	  (defmethod-forms
-	   (when (and foreign-slot-name foreign-slot-type)
+	   (when foreign-slot-name
 	       (loop for writer-name in writer-names
 		  collect `(defmethod (setf ,writer-name) :after (value (,class-name ,class-name))
 			     ,(format nil "Sets the foreign slot ~s to the according new value"
 				      foreign-slot-name)
 			     (setf (foreign-slot-value (fp ,class-name) ',foreign-object-type ',foreign-slot-name)
-				   (convert-to-foreign value ',foreign-slot-type)))))))
+				   ,(if foreign-slot-type
+					`(convert-to-foreign value ',foreign-slot-type)
+					'value)))))))
       (remf (cdr slot-definition) :foreign-slot-name) ; remove our own slot args
       (remf (cdr slot-definition) :foreign-type)
       (values (if foreign-slot-type
@@ -94,7 +96,16 @@ the defclass options"
 
 (defmacro define-wrapper-class (classname superclasses slots &rest options)
   "Defines a wrapper class for a foreign struct.
-Includes: foreign type definition, the wrapper class, a translate-from-foreign method"
+Includes: foreign type definition, the wrapper class, a translate-from-foreign method
+
+define-wrapper-class classname (superclass*) (slot-description*) [option*]
+
+slot-description ::= (slot-name [:initarg initarg :foreign-slot-name foreign-slot-name
+                                  [:foreign-type foreign-type]]
+                                [standard-defclass-slot-option*])
+
+Do not specify foreign-type if the grovelled slot type is already a
+  converted one, for example :boolean."
   (let ((foreign-type-name (intern (concatenate 'string (symbol-name classname) "-TYPE"))))
     (multiple-value-bind (foreign-type defclass-options)
 	(parse-wrapper-class-options options)
