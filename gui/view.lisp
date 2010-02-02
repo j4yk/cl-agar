@@ -8,4 +8,4 @@
   (ag-cffi::opengl opengl-p)
   (ag-cffi::windows windows))
 
-(defcvar ("agView" *agview*) display "Agar Device Context")
+(defcvar ("agView" *view*) (:pointer display) "Agar Device Context")
