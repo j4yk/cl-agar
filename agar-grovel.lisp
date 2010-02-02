@@ -35,6 +35,8 @@
 
 (cstruct label "AG_Label")
 
+(cstruct editable "AG_Editable")
+
 (cstruct window "AG_Window"
 	 (windows "windows" :type tailqueue-entry)
 	 (visible "visible" :type :boolean))
