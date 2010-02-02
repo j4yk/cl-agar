@@ -19,6 +19,12 @@
 (defun window-new (&rest flags)
   (foreign-funcall "AG_WindowNew" window-flags flags window))
 
+(defun window-new-named (name &rest flags)
+  (foreign-funcall "AG_WindowNewNamed"
+		   window-flags flags
+		   :string name
+		   window))
+
 (defun window-set-caption (window format-control-str &rest format-args)
   (foreign-funcall "AG_WindowSetCaption"
 		   window window

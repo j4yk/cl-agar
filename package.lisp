@@ -13,6 +13,7 @@
 	   #:label-new-string
 	   #:window
 	   #:window-new
+	   #:window-new-named
 	   #:window-show
 	   #:window-set-caption
 	   #:window-draw
