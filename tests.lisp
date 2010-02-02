@@ -14,6 +14,7 @@
 	 (let ((tr2 (foreign-funcall "SDL_GetTicks" :uint32)))
 	   (cond
 	     ((>= (- tr2 tr1) (rnom *view*)) ; time to redraw?
+	      (format t "~%render")
 	      (render
 		(dolist (win (tailqueue-to-list (windows *view*) #'windows))
 		  (window-draw win))))
@@ -28,10 +29,13 @@
 	      (process-timeout tr2))
 	     ((> (rcur *view*) *idle-thresh*)
 	      ;; idle the rest of the time
+	      (format t "~%idle")
 	      (foreign-funcall "SDL_Delay" :int (- (rcur *view*) *idle-thresh*)))))))))
 
 (defun custom-event-loop-test ()
   (with-agar-core ("custom-event-loop-test")
     (with-video (320 300 32 :resizable)
-      (text-msg :info "Hello, world!")
-      (custom-event-loop))))
+      (let ((win (window-new)))
+	(label-new-string win "Hello, world!")
+	(window-show win)
+	(custom-event-loop)))))

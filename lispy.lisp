@@ -3,11 +3,9 @@
 (defmacro with-agar-core ((progname &rest core-flags) &body body)
   "Initialisiert Agar gegebenenfalls, sodass body Agar-Funktionen verwenden kann.
 Am Ende wird AG_Destroy aufgerufen"
-;  `(unwind-protect
-	`(progn
-	  (init-core ,progname ,core-flags)
-	  ,@body))
-;     (destroy)))
+  `(progn
+     (init-core ,progname ,core-flags)
+     ,@body))
 
 (defmacro destroy-gui-at-end (&body body)
   `(unwind-protect

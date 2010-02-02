@@ -1,9 +1,8 @@
 (in-package agar)
 
-(define-wrapper-class label (widget)
-  ()
-  (:documentation "Wrapper class for AG_Label")
-  (:foreign-type ag-cffi::label))
+(define-foreign-class (label ag-cffi::label) (widget))
+
+(define-slot-accessors label)
 
 (defbitfield label-flags
   :frame

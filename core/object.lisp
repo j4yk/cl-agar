@@ -1,5 +1,5 @@
 (in-package agar)
 
-(define-wrapper-class object ()
-  ()
-  (:foreign-type ag-cffi::object))
+(define-foreign-class (object ag-cffi::object) ())
+
+(define-slot-accessors object nil)

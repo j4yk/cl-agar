@@ -1,27 +1,10 @@
 (defpackage agar-cffi
   (:nicknames :ag-cffi)
-  (:use :cl :cffi)
-  (:export #:sdl-event
-	   #:object-class
-	   #:tailq-head
-	     #:tqh-first
-	   #:tailq-entry
-	     #:tqe-next
-	   #:rect2
-	   #:display
-	     #:opengl
-	     #:windows
-	   #:widget
-	     #:r-view
-	   #:window
-	     #:visible))
+  (:use :cl :cffi))
 
 (defpackage agar
   (:nicknames :ag)
   (:use :cl :cffi)
-  (:import-from lispbuilder-sdl
-		#:foreign-object
-		#:fp)
   (:export #:with-agar-core
 	   #:with-video
 	   #:with-sdl-video

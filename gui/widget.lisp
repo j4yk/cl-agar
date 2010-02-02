@@ -1,9 +1,8 @@
 (in-package agar)
 
-(define-wrapper-class widget (object)
-  ((view-rectangle :reader view-rectangle :reader rview :initarg :rview
-		   :foreign-slot-name ag-cffi::rview :foreign-type ag-cffi::rect2))
-  (:documentation "Wrapper class for AG_Widget")
-  (:foreign-type ag-cffi::widget))
+(define-foreign-class (widget ag-cffi::widget) (object))
+
+(define-slot-accessors widget
+  (ag-cffi::rview view-rectangle rview))
 
 (defcfun ("AG_WidgetDraw" widget-draw) :void (widget widget))

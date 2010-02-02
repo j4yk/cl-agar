@@ -13,6 +13,8 @@
 
 (cstruct sdl-event "SDL_Event")
 
+(cstruct object "AG_Object")
+
 (cstruct tailqueue-head "AG_TAILQ_HEAD(,ag_object)"
 	 (tqh-first "tqh_first" :type :pointer)
 	 (tqh-last "tqh_last" :type :pointer))
@@ -27,6 +29,15 @@
 	 (sub "sub" :type tailqueue-head))
 
 (cstruct rect2 "AG_Rect2")
+
+(cstruct widget "AG_Widget"
+	 (rview "rView" :type rect2))
+
+(cstruct label "AG_Label")
+
+(cstruct window "AG_Window"
+	 (windows "windows" :type tailqueue-entry)
+	 (visible "visible" :type :boolean))
 	   
 (cstruct display "AG_Display"
 	 (w "w" :type :int)
@@ -36,11 +47,4 @@
 	 (rnom "rNom" :type :uint)
 	 (opengl "opengl" :type :boolean)
 	 (windows "windows" :type tailqueue-head))
-
-(cstruct widget "AG_Widget"
-	 (rview "rView" :type rect2))
-
-(cstruct window "AG_Window"
-	 (windows "windows" :type tailqueue-entry)
-	 (visible "visible" :type :boolean))
 	 

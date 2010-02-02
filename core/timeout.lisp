@@ -4,9 +4,7 @@
   (ticks :uint32))
 (setf (symbol-function 'process-timeout) #'process-timeouts)
 
-(defagarvar ("agTimeoutObjQ" *agtimeoutobjq* :library agar-core) ag-cffi::tailqueue-head)
-(define-symbol-macro *timeout-object-queue* (convert-from-foreign *agtimeoutobjq* '(tailqueue-head :type object)))
-;; '(tailqueue-head :type object) needs the var to be a pointer...
+(defcvar ("agTimeoutObjQ" *timeout-object-queue*) tailqueue-head)
 
 (defun timeouts-queued-p ()
   (not (tailqueue-empty-p *timeout-object-queue*)))

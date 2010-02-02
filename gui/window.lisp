@@ -10,13 +10,11 @@
   :nomove :noclipping
   :modkeyevents)
 
-(define-wrapper-class window (widget)
-  ((visible :accessor visible :documentation "Whether the window is visible or not" :initarg :visible
-	    :foreign-slot-name ag-cffi::visible)
-   (windows :accessor windows :documentation "TAILQ_ENTRY for AG_Windows" :initarg :windows
-	    :foreign-slot-name ag-cffi::windows :foreign-type (tailqueue-entry :type window)))
-  (:documentation "Wrapper class for AG_Window")
-  (:foreign-type ag-cffi::window))
+(define-foreign-class (window ag-cffi::window) (widget))
+
+(define-slot-accessors window
+  (ag-cffi::visible visible-p)
+  (ag-cffi::windows windows))
 
 (defun window-new (&rest flags)
   (foreign-funcall "AG_WindowNew" window-flags flags window))
@@ -35,7 +33,7 @@
 Render a window to the display (must be enclosed between calls to
   (begin-rendering) and (end-rendering) or in a (render ...) form.
 The View VFS and Window object must be locked."
-  (when (visible window)
+  (when (visible-p window)
     (widget-draw window)
     (unless (opengl-p *view*)
       (view-update-fb (rview window)))))
