@@ -15,20 +15,23 @@ Am Ende wird AG_Destroy aufgerufen"
 
 (defmacro with-video ((w h depth &rest flags) &body body)
   "Initialisiert gegebenenfalls eine Videoschnittstelle für Agar."
-  `(destroy-gui-at-end
+  `(progn
      (init-video ,w ,h ,depth ,@flags)
-     ,@body))
+     (destroy-gui-at-end
+       ,@body)))
 
 (defmacro with-sdl-video ((display &rest video-flags) &body body)
   "Initialisiert Agar mit AG_InitVideoSDL und führt body aus."
-  `(destroy-gui-at-end
+  `(progn
      (init-video-sdl ,display ,@video-flags)
-     ,@body))
+     (destroy-gui-at-end
+       ,@body)))
 
 (defmacro render (&body body)
   "Schließt body in begin-rendering und end-rendering ein."
-  `(unwind-protect
-	(progn
-	  (begin-rendering)
-	  ,@body)
-     (end-rendering)))
+  `(progn
+     (begin-rendering)
+     (unwind-protect
+	  (progn
+	    ,@body)
+       (end-rendering))))
