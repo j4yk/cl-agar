@@ -14,7 +14,7 @@
 
 (define-slot-accessors window
   (ag-cffi::visible visible-p)
-  (ag-cffi::windows windows))
+  (ag-cffi::windows next-window))
 
 (defun window-new (&rest flags)
   (foreign-funcall "AG_WindowNew" window-flags flags window))
