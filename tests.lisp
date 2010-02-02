@@ -6,36 +6,43 @@
       (text-msg :info "Hello, world!")
       (event-loop))))
 
-(defun custom-event-loop ()
-  ;; http://wiki.libagar.org/wiki/Custom_event_loop
-  (with-foreign-objects ((ev 'agar-cffi::sdl-event)) ; actually a pointer
-    (let ((tr1 (foreign-funcall "SDL_GetTicks" :uint32)))
-      (loop
-	 (let ((tr2 (foreign-funcall "SDL_GetTicks" :uint32)))
-	   (cond
-	     ((>= (- tr2 tr1) (rnom *view*)) ; time to redraw?
-	      (format t "~%render")
-	      (render
-		(dolist (win (tailqueue-to-list (windows *view*) #'windows))
-		  (window-draw win))))
-	     ((not (= 0 (foreign-funcall "SDL_PollEvent" agar-cffi::sdl-event ev :int)))
-	      (format t "~%event")
-	      ;; send all SDL events to AGAR GUI
-	      (when (= -1 (process-event ev))
-		;; process event returns -1 if the app is going to be quit
-		(return)))
-	     ((not (null (tailqueue-first *timeout-object-queue*))) ; advance the timing wheels
-	      (format t "~%timeout")
-	      (process-timeout tr2))
-	     ((> (rcur *view*) *idle-thresh*)
-	      ;; idle the rest of the time
-	      (format t "~%idle")
-	      (foreign-funcall "SDL_Delay" :int (- (rcur *view*) *idle-thresh*)))))))))
+(defmethod handle-event (sdl-event)
+  (not (= -1 (process-event sdl-event))))    
 
-(defun custom-event-loop-test ()
-  (with-agar-core ("custom-event-loop-test")
-    (with-video (320 300 32 :resizable)
-      (let ((win (window-new)))
-	(label-new-string win "Hello, world!")
-	(window-show win)
-	(custom-event-loop)))))
+(let ((start-ticks nil))
+  (defmethod timestep ()
+    (unless start-ticks (setf start-ticks (sdl:system-ticks)))
+    (let ((tr2 (sdl:system-ticks)))
+      (cond
+	((>= (- tr2 tr1) (rnom *view*)) ; time to redraw?
+	 (render
+	   (dolist (win (tailqueue-to-list (windows *view*) #'next-window))
+	     (window-draw win)))
+	 ;; recalibrate the effective refresh rate
+	 (setf (rcur *view*) (- (rnom *view*) (- tr1 tr2)))
+	 (if (< (rcur *view*) 1)
+	     (setf (rcur *view*) 1)))
+	((not (null-pointer-p (tailqueue-first *timeout-object-queue*))) ; advance the timing wheels
+	 (process-timeout tr2))))))
+
+(defun lispbuilder-sdl-test ()
+  (sdl:with-init ()
+    (sdl:window 320 240 :opengl t)
+    (setf (sdl:frame-rate) 36)
+    (with-agar-core ("lispbuilder-sdl with Agar")
+      (with-sdl-video ((sdl:fp sdl:*default-display*))
+	(text-msg :info "Hello, world!")
+	(let ((win (window-new)))
+	  (label-new-string win "Another window")
+	  (window-show win))
+	(sdl:with-events (:poll sdl-event)
+	  (:quit-event () t)
+	  (:mouse-motion-event ()
+			       (handle-event sdl-event))
+	  (:mouse-button-down-event ()
+				    (handle-event sdl-event))
+	  (:mouse-button-up-event ()
+				  (handle-event sdl-event))
+	  (:idle ()
+		 (timestep)
+		 (sdl:update-display)))))))
