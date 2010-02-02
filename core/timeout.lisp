@@ -9,4 +9,4 @@
 (defun timeouts-queued-p ()
   (not (tailqueue-empty-p *timeout-object-queue*)))
 
-(defagarvar ("agIdleThresh" *idle-thresh*) :int)
+(defcvar ("agIdleThresh" *idle-thresh*) :int)
