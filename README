@@ -1,0 +1,11 @@
+CL-Agar
+
+This is a CommonLisp library intended to make Agar (http://libagar.org) usable in CommonLisp.
+
+
+
+Special notes for this branch:
+thick-wrapper
+-------------
+
+This was the first attempt to wrap Agar's objects to Lisp objects.  However it turned out to be a complicated one (I was new to CFFI) that's why I abandoned development.  This branch is not really useful in it's current state.
