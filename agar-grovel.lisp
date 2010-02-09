@@ -1,11 +1,11 @@
 (in-package :agar-cffi)
 (include "agar/core.h" "agar/gui.h")
-(flag "-I/usr/local/include/agar")
-(flag "-I/usr/include/SDL")
+#-windows (flag "-I/usr/local/include/agar")
+(flag #+windows "-I\"%USERPROFILE%\\include\\sdl\"" #-windows "-I/usr/include/SDL")
 (flag "-D_GNU_SOURCE=1")
 (flag "-D_REENTRANT")
-(flag "-I/usr/include/freetype2")
-(flag "-I/usr/include")
+#-windows (flag "-I/usr/include/freetype2")
+(flag #+windows "-I\"%USERPROFILE%\\include\"" #-windows "-I/usr/include")
 
 (ctype :size "size_t")
 
