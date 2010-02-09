@@ -2,3 +2,10 @@ CL-Agar
 
 This is a CommonLisp library intended to make Agar (http://libagar.org) usable in CommonLisp.
 
+Special notes on this branch:
+experimental
+------------
+
+This branch's code is not supposed to work and to be used in other
+projects.  It is basically a place for sketches and 'code design
+studies'.
