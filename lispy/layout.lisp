@@ -34,23 +34,39 @@ expand-function: function that expands the specification of such widget in the m
 (defun expand-compound-widget (widget-type arguments)
   (let ((item (assoc widget-type *layout-widget-dispatch-table*)))
     (assert item nil "No expansion for widget ~s defined!" widget-type)
-    (values (apply (second item) arguments) (or (third item) 1))))  
+    (values (list (apply (second item) arguments)) (or (third item) 1))))  
 
-(defun expand-child (children)
-  "Returns a form to create the widget and the number of read elements from the children-list"
+(defun expand-next (children)
+  "Returns a list of forms to create the next widget(s) and the number of read elements from the children-list"
   (etypecase (first children)
     (list				; compound widget
      (let* ((child-form (first children)))
        (expand-compound-widget (car child-form) (cdr child-form))))
-    (keyword 				; special instruction
+    (symbol 				; special instruction
      (ecase (first children)
        (:list			; a list of widget defs follows
-	(warn ":list not implemented")
-	(values nil 2)
+	(cond ((eq (second children) :eval)
+	       (values (layout-expand-children (eval (third children)) nil) 3))
+	      (t (values (layout-expand-children (second children) nil) 2)))
 	)
        (:eval 			; the following expression is to be evaluated
 	(warn ":list not implemented")
 	(values nil 2))))))
+
+#+5am
+(progn
+(5am:def-suite layout :description "Layout Building Language")
+(5am:in-suite layout)
+(5am:test expand-list
+  "Check whether :list specified widgets are expanded correctly"
+  (5am:is (equalp (expand-next '(:list ((label "foo") (label "bar"))))
+		  '((label-new-string *parent* "foo")
+		    (label-new-string *parent* "bar")))))
+(5am:test expand-list-eval
+  "Check whether :list :eval specified widgets are expanded correctly"
+  (5am:is (equalp (expand-next '(:list :eval (list '(label "foo") '(label "bar"))))
+		  '((label-new-string *parent* "foo")
+		    (label-new-string *parent* "bar"))))))
 
 (defun layout-expand-children (children result-forms)
   "Expands forms to create a tree of widgets and returns forms that actually build such a tree"
@@ -59,9 +75,8 @@ expand-function: function that expands the specification of such widget in the m
   ;; the widget-creating forms are accumulated in result-forms
   (if (null children)
       result-forms
-      (multiple-value-bind (next-child n-read-forms) (expand-child children)
-	(layout-expand-children (nthcdr n-read-forms children) (nconc result-forms (list next-child))))))
-    
+      (multiple-value-bind (next-children n-read-forms) (expand-next children)
+	(layout-expand-children (nthcdr n-read-forms children) (nconc result-forms next-children)))))
 
 (defmacro create-window-layout (window-var (&key name caption flags) &body children)
   `(let ((,window-var (window-new-named ,name ,@flags)))
