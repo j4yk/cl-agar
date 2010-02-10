@@ -37,6 +37,12 @@
 
 (cstruct editable "AG_Editable")
 
+(cstruct box "AG_Box")
+
+(cstruct vbox "AG_VBox")
+
+(cstruct hbox "AG_HBox")
+
 (cstruct window "AG_Window"
 	 (windows "windows" :type tailqueue-entry)
 	 (visible "visible" :type :boolean))

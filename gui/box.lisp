@@ -9,6 +9,18 @@
   :vfill
   :expand)
 
+(set-flag-function "AG_BoxSetHomogenous" box-set-homogenous box)
+
+(defcfun ("AG_BoxSetPadding" box-set-padding) :void
+  (box box) (padding :int))
+
+(defcfun ("AG_BoxSetSpacing" box-set-spacing) :void
+  (box box) (spacing :int))
+
+(defcenum box-type
+  :horiz
+  :vert)
+
 (define-foreign-class (vbox ag-cffi::vbox) (box))
 
 (defbitfield vbox-flags
@@ -16,16 +28,43 @@
   :vfill
   :expand)
 
-(set-flag-function "AG_VBoxSetHomogenous" vbox-set-homogenous vbox)
+(defun vbox-set-homogenous (vbox homogenous-p)
+  (box-set-homogenous vbox homogenous-p))
 
-(defcfun ("AG_VboxSetPadding" vbox-set-padding) :void
-  (vbox vbox) (padding :int))
+(defun vbox-set-padding (vbox padding)
+  (box-set-padding vbox padding))
 
-(defcfun ("AG_VBoxSetSpacing" vbox-set-spacing) :void
-  (vbox vbox) (spacing :int))
+(defun vbox-set-spacing (vbox spacing)
+  (box-set-spacing vbox spacing))
 
 (defun vbox-new (parent &rest flags)
-  (foreign-funcall "AG_VBoxNew"
+  ;; according to the macro AG_VBoxNew
+  (foreign-funcall "AG_BoxNew"
 		   widget parent
+		   box-type :vert
+		   vbox-flags flags
+		   vbox))
+
+(define-foreign-class (hbox ag-cffi::hbox) (box))
+
+(defbitfield hbox-flags
+  :hfill
+  :vfill
+  :expand)
+
+(defun hbox-set-homogenous (hbox homogenous-p)
+  (box-set-homogenous hbox homogenous-p))
+
+(defun hbox-set-padding (hbox padding)
+  (box-set-padding hbox padding))
+
+(defun hbox-set-spacing (hbox spacing)
+  (box-set-spacing hbox spacing))
+
+(defun hbox-new (parent &rest flags)
+  ;; according to the macro AG_VBoxNew
+  (foreign-funcall "AG_BoxNew"
+		   widget parent
+		   box-type :horiz
 		   vbox-flags flags
 		   vbox))
