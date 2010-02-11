@@ -29,4 +29,7 @@
 	   #:window-set-caption
 	   #:window-draw
 
-	   #:with-widgets))
+	   #:with-widgets
+	   #:vbox
+	   #:hbox
+	   #:label))
