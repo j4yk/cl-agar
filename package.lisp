@@ -27,4 +27,6 @@
 	   #:window-new-named
 	   #:window-show
 	   #:window-set-caption
-	   #:window-draw))
+	   #:window-draw
+
+	   #:with-widgets))
