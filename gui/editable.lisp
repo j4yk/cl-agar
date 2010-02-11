@@ -61,7 +61,7 @@
   "Makes a new AG_Editable with text buffer of arbitrary size"
   (let ((editable (make-instance 'editable :fp (apply #'foreign-editable-new parent flags)
 				 :buffer-size buffer-size)))
-    (setf (text editable) init-text)
+    (when init-text (setf (text editable) init-text))
     editable))
 
 (defcfun ("AG_EditableBindUTF8" editable-bind) :void
