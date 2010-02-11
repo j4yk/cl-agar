@@ -32,6 +32,10 @@ expand-function: function that expands the specification of such widget in the m
 (define-widget-expansion label (text &rest flags)
   `((,name (label-new-string ,parent-widget ,text ,@flags))))
 
+(define-widget-expansion editable (&key (buffer-size 100) init-text flags)
+  `((,name (editable-new* :parent ,parent-widget :buffer-size ,buffer-size
+			  :init-text ,init-text :flags ,flags))))
+
 (defun expand-widget (parent-widget widget)
   "Expands a single widget specification, including its children widgets,
 into a list of let*-binding-forms that can be used to create these widgets."

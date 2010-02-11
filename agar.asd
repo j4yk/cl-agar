@@ -28,6 +28,7 @@
 				     (:file widget)
 				     (:file box :depends-on (widget))
 				     (:file label :depends-on (widget))
+				     (:file editable :depends-on (widget))
 				     (:file window :depends-on (widget))))
 	       (:module lispy :depends-on (core gui)
 			:components ((:file lispy)

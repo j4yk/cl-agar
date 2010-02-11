@@ -4,7 +4,7 @@
   ((fp :reader fp :initarg :fp :initform (error "Must specify foreign-pointer!"))))
 
 (defmacro define-foreign-class ((typename base-type)
-				&optional supertypes)
+				&optional supertypes slots &rest more-defclass-args)
   (let ((classname (intern (concatenate 'string (symbol-name typename) "-CLASS"))))
     `(progn
        (defctype ,typename ,base-type)
@@ -14,7 +14,7 @@
 					     (get supertype :wrapper-class))
 					 supertypes)
 				 '(foreign-object))
-	 ()))))
+	 ,slots ,@more-defclass-args))))
 
 (defmacro define-slot-accessors (type &body slots)
   "Define accessor functions and setf-functions for the foreign-type"

@@ -1,7 +1,35 @@
 (in-package agar)
 
-(define-foreign-class (editable ag-cffi::editable) (widget))
+(define-foreign-class (editable ag-cffi::editable) (widget)
+  ((text-buffer-ptr :accessor text-buffer-ptr)
+   (text-buffer-size :reader text-buffer-size :initarg :buffer-size :initform 100))
+  (:documentation "A wrapper for an editable widget that holds the text buffer"))
 
+(defclass editable (editable-class) ())	; use the nice name instead of editable-class
+
+(defmethod initialize-instance :after ((editable editable) &key)
+  "Allocates the foreign text buffer and defines a garbage collecting procedure"
+  (setf (text-buffer-ptr editable)
+	(foreign-alloc :char :count (text-buffer-size editable) :null-terminated-p t))
+  (editable-bind editable (text-buffer-ptr editable) (text-buffer-size editable))
+  (let ((buffer-ptr (text-buffer-ptr editable)))
+    (trivial-garbage:finalize
+     editable
+     #'(lambda () (foreign-free buffer-ptr)))))
+
+(defmethod text ((editable editable))
+  "Returns the translation of the string in the buffer that Agar binds for that AG_Editable"
+  ;; dereference the pointer text-buffer-ptr-ptr points to
+  ;; and use the size value that text-buffer-size-ptr points to
+  (foreign-string-to-lisp (text-buffer-ptr editable)
+			  :count (text-buffer-size editable)))
+
+(defmethod (setf text) (text (editable editable))
+  "Sets the contents of the Editable's text buffer"
+  (lisp-string-to-foreign text
+			  (text-buffer-ptr editable)
+			  (text-buffer-size editable)))
+  
 (defbitfield editable-flags
   :multiline
   :static
@@ -19,13 +47,24 @@
   :vfill
   :expand)
 
-(defun %editable-new (parent &rest flags)
+(defun foreign-editable-new (parent &rest flags)
   (foreign-funcall "AG_EditableNew"
 		   widget parent
 		   editable-flags flags
 		   editable))
 
-(defcfun ("AG_EditableBindUTF8" editable-bind :documentation "Binds the widget to a text buffer in UTF8 encoding") :void
+(defun editable-new (parent &rest flags)
+  "Makes a new AG_Editable with text buffer of size 100"
+  (make-instance 'editable :fp (apply #'foreign-editable-new parent flags)))
+
+(defun editable-new* (parent &key buffer-size init-text flags)
+  "Makes a new AG_Editable with text buffer of arbitrary size"
+  (let ((editable (make-instance 'editable :fp (apply #'foreign-editable-new parent flags)
+				 :buffer-size buffer-size)))
+    (setf (text editable) init-text)
+    editable))
+
+(defcfun ("AG_EditableBindUTF8" editable-bind) :void
   (editable editable) (buffer :pointer) (buffer-size :size))
 
 ;; this is only from Agar 1.4.0:
@@ -50,40 +89,7 @@
 
 (defcfun ("AG_EditableSetString" editable-set-string) :void
   (editable editable) (string :string))
-;; this may be used for AG_EditablePrintf as will in combination with #'format
+;; this may be used for AG_EditablePrintf as well in combination with #'format
 
 (defcfun ("AG_EditableClearString" editable-clear-string) :void
   (editable editable))
-
-(defclass editable-widget (editable)
-  ((text-buffer-ptr :accessor text-buffer-ptr)
-   (text-buffer-size :reader text-buffer-size :initarg :buffer-size :initform 100))
-  (:documentation "A wrapper for an editable widget that holds the text buffer"))
-
-(defun editable-new (parent &rest flags)
-  (make-instance 'editable-widget :fp (apply #'%editable-new parent flags)))
-
-(defun editable-new* (parent buffer-size &rest flags)
-  (make-instance 'editable-widget :fp (apply #'%editable-new parent flags)
-		 :buffer-size buffer-size))
-
-(defmethod initialize-instance :after ((editable editable-widget) &key)
-  ;; allocate buffer
-  (setf (text-buffer-ptr-ptr editable)
-	(foreign-alloc :char :count (text-buffer-size editable)))
-  ;; let agar bind the buffer
-  (editable-bind editable (text-buffer-ptr editable) (text-buffer-size editable))
-  ;; make sure those resources are freed when our editable ceases to exist
-  (let ((text-buffer-ptr (text-buffer-ptr-ptr editable)))
-    (tg:finalize editable (lambda ()
-			    ;; problem: the memory allocated by Agar was not allocated with foreign-alloc,
-			    ;; that's why I doubt it can be freed with foreign-free
-			    ;; meanwhile I hope that the Editable cleans up its buffer itself
-			    (foreign-free text-buffer-ptr)))))
-
-(defmethod get-string ((editable editable-widget))
-  "Returns the translation of the string in the buffer that Agar binds for that AG_Editable"
-  ;; dereference the pointer text-buffer-ptr-ptr points to
-  ;; and use the size value that text-buffer-size-ptr points to
-  (foreign-string-to-lisp (text-buffer-ptr editable)
-			  :count (text-buffer-size editable)))
