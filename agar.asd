@@ -31,5 +31,6 @@
 				     (:file window :depends-on (widget))))
 	       (:module lispy :depends-on (core gui)
 			:components ((:file lispy)
-				     (:file layout)))
+				     (:file layout)
+				     #+5am (:file layout-tests)))
 	       (:file tests :depends-on (core gui lispy))))
