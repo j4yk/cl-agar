@@ -33,7 +33,7 @@ expand-function: function that expands the specification of such widget in the m
   `((,name (label-new-string ,parent-widget ,text ,@flags))))
 
 (define-widget-expansion editable (&key (buffer-size 100) init-text flags)
-  `((,name (editable-new* :parent ,parent-widget :buffer-size ,buffer-size
+  `((,name (editable-new* ,parent-widget :buffer-size ,buffer-size
 			  :init-text ,init-text :flags ,flags))))
 
 (defun expand-widget (parent-widget widget)
