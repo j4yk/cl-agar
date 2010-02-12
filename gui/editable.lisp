@@ -1,17 +1,6 @@
 (in-package agar)
 
-(define-foreign-class (editable ag-cffi::editable t) (widget)
-  ((text-buffer-ptr :accessor text-buffer-ptr)
-   (text-buffer-size :reader text-buffer-size :initarg :buffer-size :initform 100))
-  (:documentation "A wrapper for an editable widget that holds the text buffer"))
-
-(defclass editable (editable-class) ())	; use the nice name instead of editable-class
-
-(defmethod initialize-instance :after ((editable editable) &key)
-  "Allocates the foreign text buffer and defines a garbage collecting procedure"
-  (setf (text-buffer-ptr editable) (allocate-garbage-collected-buffer editable :char (1+ (text-buffer-size editable))))
-  (setf (text editable) "")
-  (editable-bind editable (text-buffer-ptr editable) (text-buffer-size editable)))
+(define-foreign-class (editable ag-cffi::editable) (widget))
   
 (defbitfield editable-flags
   :hfill
@@ -31,24 +20,11 @@
   :wordwrap
   (:expand #x3))
 
-(defun foreign-editable-new (parent &rest flags)
+(defun editable-new (parent &rest flags)
   (foreign-funcall "AG_EditableNew"
 		   widget parent
 		   editable-flags flags
 		   editable))
-
-(defun editable-new (parent &rest flags)
-  "Makes a new AG_Editable with text buffer of size 100"
-  (make-instance 'editable :fp (apply #'foreign-editable-new parent flags)))
-
-(defun editable-new* (parent &key (buffer-size 100) size-hint init-text flags)
-  "Makes a new AG_Editable with text buffer of arbitrary size"
-  (let ((editable (make-instance 'editable
-				 :fp (apply #'foreign-editable-new parent flags)
-				 :buffer-size buffer-size)))
-    (when init-text (setf (text editable) init-text))
-    (when size-hint (editable-size-hint editable size-hint))
-    editable))
 
 (defcfun ("AG_EditableBindUTF8" editable-bind) :void
   (editable editable) (buffer :pointer) (buffer-size :size))
@@ -78,14 +54,3 @@
 
 (defcfun ("AG_EditableClearString" editable-clear-string) :void
   (editable editable))
-
-(defmethod text ((editable editable))
-  "Returns the translation of the string in the buffer that Agar binds for that AG_Editable"
-  ;; dereference the pointer text-buffer-ptr-ptr points to
-  ;; and use the size value that text-buffer-size-ptr points to
-  (foreign-string-to-lisp (text-buffer-ptr editable)
-			  :count (text-buffer-size editable)))
-
-(defmethod (setf text) (text (editable editable))
-  "Sets the contents of the Editable's text buffer"
-  (editable-set-string editable text))
