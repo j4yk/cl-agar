@@ -32,9 +32,14 @@ expand-function: function that expands the specification of such widget in the m
 (define-widget-expansion label (text &rest flags)
   `((,name (label-new-string ,parent-widget ,text ,@flags))))
 
-(define-widget-expansion editable (&key (buffer-size 100) init-text flags)
+(define-widget-expansion editable (&key (buffer-size 100) size-hint init-text flags)
   `((,name (editable-new* ,parent-widget :buffer-size ,buffer-size
+			  :size-hint ,size-hint
 			  :init-text ,init-text :flags ,flags))))
+
+(define-widget-expansion textbox (&key (buffer-size 100) size-hint init-text flags)
+  `((,name (textbox-new ,parent-widget :buffer-size ,buffer-size
+			:size-hint ,size-hint :init-text ,init-text :flags ,flags))))
 
 (defun expand-widget (parent-widget widget)
   "Expands a single widget specification, including its children widgets,

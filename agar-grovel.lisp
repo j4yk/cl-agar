@@ -43,6 +43,8 @@
 
 (cstruct hbox "AG_HBox")
 
+(cstruct textbox "AG_Textbox")
+
 (cstruct window "AG_Window"
 	 (windows "windows" :type tailqueue-entry)
 	 (visible "visible" :type :boolean))
