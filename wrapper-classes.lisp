@@ -3,11 +3,25 @@
 (defclass foreign-object ()
   ((fp :reader fp :initarg :fp :initform (error "Must specify foreign-pointer!"))))
 
-(defmacro define-foreign-class ((typename base-type)
+(defmacro define-foreign-class ((typename base-type &optional extended-p)
 				&optional supertypes slots &rest more-defclass-args)
-  (let ((classname (intern (concatenate 'string (symbol-name typename) "-CLASS"))))
+  (let ((classname (conc-symbols typename '-class))
+	(foreign-type-name (when extended-p (conc-symbols typename '-type))))
     `(progn
-       (defctype ,typename ,base-type)
+       ,(if extended-p
+	    ;; extended means that an extended foreign type will be defined
+	    ;; and a translate-to-foreign will be implemented that returns
+	    ;; the fp slot of the passed object
+       	    `(define-foreign-type ,foreign-type-name ()
+	       ()
+	       (:simple-parser ,typename)
+	       (:actual-type ,base-type))
+	    ;; for simple types a defctype suffices
+	    `(defctype ,typename ,base-type))
+       ,(when extended-p
+	   `(defmethod translate-to-foreign (instance (type ,foreign-type-name))
+	      "Returns the wrapper class instance's foreign pointer"
+	      (fp instance)))
        (setf (get ',typename :wrapper-class) ',classname)
        (defclass ,classname ,(if supertypes
 				 (mapcar #'(lambda (supertype)
