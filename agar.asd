@@ -11,7 +11,7 @@
   :version "0.1"
   :author "Jakob Reschke <jakres@gmail.com>"
   :license "BSD"
-  :depends-on (:cffi :cl-opengl :lispbuilder-sdl)
+  :depends-on (:cffi :trivial-garbage :cl-opengl :lispbuilder-sdl)
   :components ((:file "package")
 	       (:file utils :depends-on (package))
 	       (:file wrapper-classes :depends-on (package))
