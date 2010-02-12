@@ -29,10 +29,8 @@
   (textbox textbox) (text :string))
 
 (defun textbox-set-string (textbox string)
-  (foreign-funcall "AG_EditableSetString"
-		   :pointer (foreign-slot-value (fp textbox) 'ag-cffi::textbox 'ag-cffi::editable)
-		   :string string
-		   :void))
+  (editable-set-string (foreign-slot-value (fp textbox) 'ag-cffi::textbox 'ag-cffi::editable)
+		       string))
 
 (defmethod initialize-instance :after ((textbox textbox) &key)
   "Allocates the foreign text buffer and defines a garbage collecting procedure"
