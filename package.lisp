@@ -4,7 +4,7 @@
 
 (defpackage agar
   (:nicknames :ag)
-  (:use :cl :cffi)
+  (:use :cl :cffi #+5am :5am)
   (:export #:with-agar-core
 	   #:with-video
 	   #:with-sdl-video

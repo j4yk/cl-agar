@@ -1,7 +1,5 @@
 (in-package agar)
 
-(use-package :5am)
-
 (def-suite layout :description "Layout Building Language")
 
 (in-suite layout)
