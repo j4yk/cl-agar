@@ -9,30 +9,27 @@
 
 (defmethod initialize-instance :after ((editable editable) &key)
   "Allocates the foreign text buffer and defines a garbage collecting procedure"
-  (setf (text-buffer-ptr editable)
-	(foreign-alloc :char :count (1+ (text-buffer-size editable)))) ; 1+ for null-termination
-  (editable-bind editable (text-buffer-ptr editable) (text-buffer-size editable))
-  (let ((buffer-ptr (text-buffer-ptr editable)))
-    (trivial-garbage:finalize
-     editable
-     #'(lambda () (foreign-free buffer-ptr)))))
+  (setf (text-buffer-ptr editable) (allocate-garbage-collected-buffer editable :char (1+ (text-buffer-size editable))))
+  (setf (text editable) "")
+  (editable-bind editable (text-buffer-ptr editable) (text-buffer-size editable)))
   
 (defbitfield editable-flags
+  :hfill
+  :vfill
   :multiline
-  :static
-  :password
+  (:password #x10)
   :abandon-focus
   :int-only
   :flt-only
   :catch-tab
-  :noscroll
+  (:noscroll #x800)
   :noscroll-once
+  (:static #x4000)
   :noemacs
   :nowordseek
   :nolatin1
-  :hfill
-  :vfill
-  :expand)
+  :wordwrap
+  (:expand #x3))
 
 (defun foreign-editable-new (parent &rest flags)
   (foreign-funcall "AG_EditableNew"
@@ -44,11 +41,13 @@
   "Makes a new AG_Editable with text buffer of size 100"
   (make-instance 'editable :fp (apply #'foreign-editable-new parent flags)))
 
-(defun editable-new* (parent &key buffer-size init-text flags)
+(defun editable-new* (parent &key (buffer-size 100) size-hint init-text flags)
   "Makes a new AG_Editable with text buffer of arbitrary size"
-  (let ((editable (make-instance 'editable :fp (apply #'foreign-editable-new parent flags)
+  (let ((editable (make-instance 'editable
+				 :fp (apply #'foreign-editable-new parent flags)
 				 :buffer-size buffer-size)))
     (when init-text (setf (text editable) init-text))
+    (when size-hint (editable-size-hint editable size-hint))
     editable))
 
 (defcfun ("AG_EditableBindUTF8" editable-bind) :void
