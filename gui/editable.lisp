@@ -1,6 +1,6 @@
 (in-package agar)
 
-(define-foreign-class (editable ag-cffi::editable) (widget)
+(define-foreign-class (editable ag-cffi::editable t) (widget)
   ((text-buffer-ptr :accessor text-buffer-ptr)
    (text-buffer-size :reader text-buffer-size :initarg :buffer-size :initform 100))
   (:documentation "A wrapper for an editable widget that holds the text buffer"))
@@ -10,25 +10,12 @@
 (defmethod initialize-instance :after ((editable editable) &key)
   "Allocates the foreign text buffer and defines a garbage collecting procedure"
   (setf (text-buffer-ptr editable)
-	(foreign-alloc :char :count (text-buffer-size editable) :null-terminated-p t))
+	(foreign-alloc :char :count (1+ (text-buffer-size editable)))) ; 1+ for null-termination
   (editable-bind editable (text-buffer-ptr editable) (text-buffer-size editable))
   (let ((buffer-ptr (text-buffer-ptr editable)))
     (trivial-garbage:finalize
      editable
      #'(lambda () (foreign-free buffer-ptr)))))
-
-(defmethod text ((editable editable))
-  "Returns the translation of the string in the buffer that Agar binds for that AG_Editable"
-  ;; dereference the pointer text-buffer-ptr-ptr points to
-  ;; and use the size value that text-buffer-size-ptr points to
-  (foreign-string-to-lisp (text-buffer-ptr editable)
-			  :count (text-buffer-size editable)))
-
-(defmethod (setf text) (text (editable editable))
-  "Sets the contents of the Editable's text buffer"
-  (lisp-string-to-foreign text
-			  (text-buffer-ptr editable)
-			  (text-buffer-size editable)))
   
 (defbitfield editable-flags
   :multiline
@@ -89,7 +76,17 @@
 
 (defcfun ("AG_EditableSetString" editable-set-string) :void
   (editable editable) (string :string))
-;; this may be used for AG_EditablePrintf as well in combination with #'format
 
 (defcfun ("AG_EditableClearString" editable-clear-string) :void
   (editable editable))
+
+(defmethod text ((editable editable))
+  "Returns the translation of the string in the buffer that Agar binds for that AG_Editable"
+  ;; dereference the pointer text-buffer-ptr-ptr points to
+  ;; and use the size value that text-buffer-size-ptr points to
+  (foreign-string-to-lisp (text-buffer-ptr editable)
+			  :count (text-buffer-size editable)))
+
+(defmethod (setf text) (text (editable editable))
+  "Sets the contents of the Editable's text buffer"
+  (editable-set-string editable text))
