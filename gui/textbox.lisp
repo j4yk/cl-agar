@@ -28,6 +28,12 @@
 (defcfun ("AG_TextboxSizeHint" textbox-size-hint) :void
   (textbox textbox) (text :string))
 
+(defun textbox-set-string (textbox string)
+  (foreign-funcall "AG_EditableSetString"
+		   :pointer (foreign-slot-value (fp textbox) 'ag-cffi::textbox 'ag-cffi::editable)
+		   :string string
+		   :void))
+
 (defmethod initialize-instance :after ((textbox textbox) &key)
   "Allocates the foreign text buffer and defines a garbage collecting procedure"
   (setf (text-buffer-ptr textbox) (allocate-garbage-collected-buffer textbox :char (1+ (text-buffer-size textbox)))
@@ -39,17 +45,25 @@
       (foreign-funcall "AG_TextboxNew"
 		       widget parent
 		       textbox-flags flags
+		       :string label-text
 		       textbox)
       (foreign-funcall "AG_TextboxNew"
 		       widget parent
 		       textbox-flags flags
-		       :string label-text
+		       :pointer (null-pointer)
 		       textbox)))
 
-(defun textbox-new (parent-widget &key label-text (buffer-size 100) (size-hint "twenty chars        ") init-text flags)
+(defun textbox-new (parent-widget &key label-text (buffer-size 100) (size-hint "twenty chars        ")
+		    init-text flags)
   (let ((textbox (make-instance 'textbox
 				:fp (foreign-textbox-new parent-widget flags label-text)
 				:buffer-size buffer-size)))
     (when init-text (setf (text textbox) init-text))
     (when size-hint (textbox-size-hint textbox size-hint))
     textbox))
+
+(defmethod text ((textbox textbox))
+  (foreign-string-to-lisp (text-buffer-ptr textbox) :count (text-buffer-size textbox)))
+
+(defmethod (setf text) (text (textbox textbox))
+  (textbox-set-string textbox text))

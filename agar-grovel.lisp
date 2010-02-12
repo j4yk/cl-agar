@@ -43,7 +43,8 @@
 
 (cstruct hbox "AG_HBox")
 
-(cstruct textbox "AG_Textbox")
+(cstruct textbox "AG_Textbox"
+	 (editable "ed" :type editable))
 
 (cstruct window "AG_Window"
 	 (windows "windows" :type tailqueue-entry)
