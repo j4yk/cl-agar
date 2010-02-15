@@ -25,7 +25,8 @@
 (defun init-video-sdl (display &rest flags)
   "int AG_InitVideoSDL(SDL_Surface *display, Uint flags)"
   (foreign-funcall "AG_InitVideoSDL" :pointer display video-flags flags
-		   agar-code))
+		   agar-code)
+  (setq *video-initialized* t))
 
 (defun destroy-gui ()
   "void AG_DestroyGUI();"
