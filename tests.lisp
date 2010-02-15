@@ -14,12 +14,12 @@
     (unless start-ticks (setf start-ticks (sdl:system-ticks)))
     (let ((tr2 (sdl:system-ticks)))
       (cond
-	((>= (- tr2 tr1) (rnom *view*)) ; time to redraw?
+	((>= (- tr2 start-ticks) (rnom *view*)) ; time to redraw?
 	 (render
 	   (dolist (win (tailqueue-to-list (windows *view*) #'next-window))
 	     (window-draw win)))
 	 ;; recalibrate the effective refresh rate
-	 (setf (rcur *view*) (- (rnom *view*) (- tr1 tr2)))
+	 (setf (rcur *view*) (- (rnom *view*) (- start-ticks tr2)))
 	 (if (< (rcur *view*) 1)
 	     (setf (rcur *view*) 1)))
 	((not (null-pointer-p (tailqueue-first *timeout-object-queue*))) ; advance the timing wheels
