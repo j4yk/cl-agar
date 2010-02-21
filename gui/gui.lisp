@@ -27,11 +27,11 @@
   (foreign-funcall "AG_InitVideoSDL" :pointer display video-flags flags
 		   agar-code))
 
-(defun destroy-gui ()
-  "void AG_DestroyGUI();"
-  (unwind-protect
-       (foreign-funcall "AG_DestroyGUI" :void)
-    (setq *video-initialized* nil)))
+(defcvar ("agView" *view*) (:pointer display) "Agar VFS")
+
+(defun destroy-video ()
+  (foreign-funcall "AG_DestroyVideo" :void)
+  (setq *video-initialized* nil))
 
 (defcenum text-msg-title
   (:error)
