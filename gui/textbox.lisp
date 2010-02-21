@@ -1,7 +1,8 @@
 (in-package agar)
 
 (define-foreign-class (textbox ag-cffi::textbox t) (widget)
-  ((text-buffer-ptr :accessor text-buffer-ptr)
+  ((editable :accessor editable)
+   (text-buffer-ptr :accessor text-buffer-ptr)
    (text-buffer-size :reader text-buffer-size :initarg :buffer-size :initform 100))
   (:documentation "A wrapper for a textbox widget that holds the text buffer"))
 
@@ -22,21 +23,18 @@
   :nolatin1
   (:expand #x60))
 
-(defcfun ("AG_TextboxBindUTF8" textbox-bind-utf8) :void
-  (textbox textbox) (buffer :pointer) (buffer-size :size))
+;; actually the definition is void AG_TextboxPrintf(AG_Textbox *tb, const char *fmt, ...)
+;; but formatting is better done with #'format
+(defcfun ("AG_TextboxPrintf" textbox-set-string) :void
+    (textbox textbox) (string :string))
 
-(defcfun ("AG_TextboxSizeHint" textbox-size-hint) :void
-  (textbox textbox) (text :string))
-
-(defun textbox-set-string (textbox string)
-  (editable-set-string (foreign-slot-value (fp textbox) 'ag-cffi::textbox 'ag-cffi::editable)
-		       string))
+(defun textbox-size-hint (textbox hint-str)
+  (editable-size-hint (editable textbox) hint-str))
 
 (defmethod initialize-instance :after ((textbox textbox) &key)
   "Allocates the foreign text buffer and defines a garbage collecting procedure"
-  (setf (text-buffer-ptr textbox) (allocate-garbage-collected-buffer textbox :char (1+ (text-buffer-size textbox)))
-	(text textbox) "")
-  (textbox-bind-utf8 textbox (text-buffer-ptr textbox) (text-buffer-size textbox)))
+  (setf (editable textbox) (foreign-slot-value (fp textbox) 'ag-cffi::textbox 'ag-cffi::ed))
+  (setf (text textbox) "init"))
 
 (defun foreign-textbox-new (parent flags &optional label-text)
   (if label-text
@@ -61,7 +59,7 @@
     textbox))
 
 (defmethod text ((textbox textbox))
-  (foreign-string-to-lisp (text-buffer-ptr textbox) :count (text-buffer-size textbox)))
+  (foreign-string-to-lisp (text-buffer-ptr textbox)))
 
 (defmethod (setf text) (text (textbox textbox))
   (textbox-set-string textbox text))
