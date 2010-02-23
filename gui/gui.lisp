@@ -27,8 +27,6 @@
   (foreign-funcall "AG_InitVideoSDL" :pointer display video-flags flags
 		   agar-code))
 
-(defcvar ("agView" *view*) (:pointer display) "Agar VFS")
-
 (defun destroy-video ()
   (foreign-funcall "AG_DestroyVideo" :void)
   (setq *video-initialized* nil))
