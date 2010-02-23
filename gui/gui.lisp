@@ -24,8 +24,20 @@
 
 (defun init-video-sdl (display &rest flags)
   "int AG_InitVideoSDL(SDL_Surface *display, Uint flags)"
-  (foreign-funcall "AG_InitVideoSDL" :pointer display video-flags flags
-		   agar-code))
+  (restart-case (if *initialized*
+		    (foreign-funcall "AG_InitVideoSDL" :pointer display video-flags flags
+				     agar-code)
+		    (error "Agar has not yet been initialized!"))
+    (init-agar (&optional (progname "prog") init-flags)
+      :report "Initialize Agar with default settings and try again"
+      (init-core progname init-flags)
+      (apply #'init-video-sdl display flags))
+    (init-agar (progname init-flags)
+      :interactive (lambda () (list (progn (princ "Program name: ") (read-line))
+				    (progn (princ "Flags: ") (eval (read)))))
+      :report "Initialize Agar and try again"
+      (init-core progname init-flags)
+      (apply #'init-video-sdl display flags))))
 
 (defun destroy-video ()
   (foreign-funcall "AG_DestroyVideo" :void)
