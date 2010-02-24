@@ -10,6 +10,7 @@
 (ctype :size "size_t")
 
 (constant (+object-type-max+ "AG_OBJECT_TYPE_MAX"))
+(constant (+event-args-max+ "AG_EVENT_ARGS_MAX"))
 
 (cstruct sdl-event "SDL_Event")
 
@@ -28,6 +29,24 @@
 	 (subclasses "subclasses" :type tailqueue-entry)
 	 (sub "sub" :type tailqueue-head))
 
+(cenum variable-type
+       ((:pointer "AG_VARIABLE_POINTER")))
+
+(cunion variable-data "union ag_variable_data"
+	(p "p" :type :pointer)
+	(s "s" :type :string)
+	(i "i" :type :int)
+	(u "u" :type :uint)
+	(flt "flt" :type :float)
+	(dbl "dbl" :type :double))
+
+(cstruct variable "AG_Variable"
+	 (type "type" :type variable-type)
+	 (data "data" :type variable-data))
+
+(cstruct event "AG_Event"
+	 (argv "argv" :type variable :count "AG_EVENT_ARGS_MAX"))
+
 (cstruct rect2 "AG_Rect2")
 
 (cstruct widget "AG_Widget"
@@ -42,6 +61,8 @@
 (cstruct vbox "AG_VBox")
 
 (cstruct hbox "AG_HBox")
+
+(cstruct button "AG_Button")
 
 (cstruct textbox "AG_Textbox"
 	 (ed "ed" :type editable))
