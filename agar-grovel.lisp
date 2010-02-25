@@ -7,7 +7,7 @@
 #-windows (flag "-I/usr/include/freetype2")
 (flag #+windows "-I\"%USERPROFILE%\\include\"" #-windows "-I/usr/include")
 
-(ctype :size "size_t")
+(ctype size "size_t")
 
 (constant (+object-type-max+ "AG_OBJECT_TYPE_MAX"))
 (constant (+event-args-max+ "AG_EVENT_ARGS_MAX"))
@@ -30,7 +30,9 @@
 	 (sub "sub" :type tailqueue-head))
 
 (cenum variable-type
-       ((:pointer "AG_VARIABLE_POINTER")))
+       ((:pointer "AG_VARIABLE_POINTER"))
+       ((:string "AG_VARIABLE_STRING"))
+       ((:int "AG_VARIABLE_INT")))
 
 (cunion variable-data "union ag_variable_data"
 	(p "p" :type :pointer)
