@@ -10,6 +10,8 @@
   :nomove :noclipping
   :modkeyevents)
 
+(defctype window-alignment ag-cffi::window-alignment)
+
 (define-foreign-class (window ag-cffi::window) (widget))
 
 (define-slot-accessors window
@@ -33,6 +35,12 @@
 
 (defcfun ("AG_WindowShow" window-show) :void
   (window window))
+
+(defcfun ("AG_WindowHide" hide-window) :void
+  (window window))
+
+(defcfun ("AG_WindowSetPosition" window-set-position) :void
+  (win window) (alignment window-alignment) (cascade :boolean))
 
 (defun window-draw (window)
   "static __inline__ void AG_WindowDraw(AG_Window *win)

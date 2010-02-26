@@ -34,7 +34,7 @@
 				     (:file button :depends-on (widget))
 				     (:file editable :depends-on (widget))
 				     (:file textbox :depends-on (widget))
-				     (:file window :depends-on (widget))))
+				     (:file window :depends-on (widget view))))
 	       (:module lispy :depends-on (core gui)
 			:components ((:file lispy)
 				     (:file layout)

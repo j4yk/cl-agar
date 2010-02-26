@@ -69,6 +69,9 @@
 (cstruct textbox "AG_Textbox"
 	 (ed "ed" :type editable))
 
+(cenum window-alignment
+       ((:tl "AG_WINDOW_TL")))
+
 (cstruct window "AG_Window"
 	 (windows "windows" :type tailqueue-entry)
 	 (visible "visible" :type :boolean))
