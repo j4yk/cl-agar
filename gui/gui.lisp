@@ -25,8 +25,10 @@
 (defun init-video-sdl (display &rest flags)
   "int AG_InitVideoSDL(SDL_Surface *display, Uint flags)"
   (restart-case (if *initialized*
-		    (foreign-funcall "AG_InitVideoSDL" :pointer display video-flags flags
-				     agar-code)
+		    (progn
+		      (foreign-funcall "AG_InitVideoSDL" :pointer display video-flags flags
+				       agar-code)
+		      (setq *video-initialized* t))
 		    (error "Agar has not yet been initialized!"))
     (init-agar (&optional (progname "prog") init-flags)
       :report "Initialize Agar with default settings and try again"
