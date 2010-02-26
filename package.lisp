@@ -1,10 +1,11 @@
 (defpackage agar-cffi
   (:nicknames :ag-cffi)
-  (:use :cl :cffi))
+  (:use :cl :cffi)
+  (:export #:size))
 
 (defpackage agar
   (:nicknames :ag)
-  (:use :cl :cffi #+5am :5am)
+  (:use :cl :cffi #+5am :5am :ag-cffi)
   (:export
    ;; macros
    #:with-agar-core

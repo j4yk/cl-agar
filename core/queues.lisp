@@ -2,13 +2,13 @@
 
 (defctype tailqueue-head ag-cffi::tailqueue-head)
 
-(defun tailqueue-first (tailqueue-head)
-  (foreign-slot-value tailqueue-head 'tailqueue-head 'ag-cffi::tqh-first))
+(define-slot-accessors tailqueue-head
+  (ag-cffi::tqh-first tailqueue-first))
 
 (defctype tailqueue-entry ag-cffi::tailqueue-entry)
 
-(defun tailqueue-entry-next (tailqueue-entry)
-  (foreign-slot-value tailqueue-entry 'tailqueue-entry 'ag-cffi::tqe-next))
+(define-slot-accessors tailqueue-entry
+  (ag-cffi::tqe-next tailqueue-entry-next))
 
 ;; TODO: dig into this warning here:
 ;; conflicts with asserted type: SAP <> TAILQUEUE-ENTRY

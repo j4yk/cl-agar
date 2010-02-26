@@ -35,9 +35,15 @@
   `(progn
      ,@(loop for slot in slots
 	  append (let ((slot-name (first slot))
-		       (accessor-names (rest slot)))
-		   (loop for accessor-name in accessor-names
-		      collect `(defun ,accessor-name (,type)
-				 (foreign-slot-value ,type ',type ',slot-name))
-		      collect `(defun (setf ,accessor-name) (value ,type)
-				 (setf (foreign-slot-value ,type ',type ',slot-name) value)))))))
+		       (accessor-names (rest slot))
+		       (writer-p (eq (car (last slot)) :writable)))
+		   (let ((accessor-names (if writer-p
+					     (cdr (nreverse accessor-names)) ; remove last element
+					     accessor-names)))
+		     (print accessor-names)
+		     (loop for accessor-name in accessor-names
+			collect `(defun ,accessor-name (,type)
+				   (foreign-slot-value ,type ',type ',slot-name))
+			when writer-p
+			collect `(defun (setf ,accessor-name) (value ,type)
+				   (setf (foreign-slot-value ,type ',type ',slot-name) value))))))))
