@@ -17,6 +17,7 @@
    ;; core functions
    #:init-core
    #:process-event
+   #:event-loop
    ;; queues
    #:tailqueue-to-list
    ;; timeout
@@ -35,6 +36,7 @@
    #:*video-initialized*
    #:init-video-sdl
    #:destroy-video
+   #:text-msg
    ;; view
    #:windows
    #:*view*
