@@ -27,7 +27,7 @@
 		   editable))
 
 (defcfun ("AG_EditableBindUTF8" editable-bind) :void
-  (editable editable) (buffer :pointer) (buffer-size :size))
+  (editable editable) (buffer :pointer) (buffer-size size))
 
 ;; this is only from Agar 1.4.0:
 ;; (defcfun ("AG_EditableBindAutoUTF8" editable-bind-auto
