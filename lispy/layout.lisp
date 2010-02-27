@@ -32,7 +32,7 @@ expand-function: function that expands the specification of such widget in the m
 (define-widget-expansion label (text &rest flags)
   `((,name (label-new-string ,parent-widget ,text ,@flags))))
 
-(define-widget-expansion textbox (&key label-text (buffer-size 100) size-hint init-text flags)
+(define-widget-expansion textbox (&key label-text (buffer-size 100) (size-hint "XXXXXXXXXXXXXXX") init-text flags)
   `((,name (textbox-new ,parent-widget :label-text ,label-text :buffer-size ,buffer-size
 			:size-hint ,size-hint :init-text ,init-text :flags ,flags))))
 
@@ -53,7 +53,7 @@ into a list of let*-binding-forms that can be used to create these widgets."
 				  (nconc acc expansion)))))
 
 (defun expand-widgets (widgets parent-widget body-forms)
-  "Expands the widgets into a let*-binding form with body-forms as its body
+  "Expands the widgets into a let* form with body-forms as its body
 
 parent-widget is used as the parent widget of the toplevel widgets"
   (declare (ftype (function (list t list) list) expand-widgets))

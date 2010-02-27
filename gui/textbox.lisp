@@ -33,8 +33,7 @@
 
 (defmethod initialize-instance :after ((textbox textbox) &key)
   "Allocates the foreign text buffer and defines a garbage collecting procedure"
-  (setf (editable textbox) (foreign-slot-value (fp textbox) 'ag-cffi::textbox 'ag-cffi::ed))
-  (setf (text textbox) "init"))
+  (setf (editable textbox) (foreign-slot-value (fp textbox) 'ag-cffi::textbox 'ag-cffi::ed)))
 
 (defun foreign-textbox-new (parent flags &optional label-text)
   (if label-text
