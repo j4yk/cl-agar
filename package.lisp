@@ -15,7 +15,29 @@
    ;; generic functions
    #:text
    ;; core functions
+   #:init-core
    #:process-event
+   ;; queues
+   #:tailqueue-to-list
+   ;; timeout
+   #:timeouts-queued-p
+   #:process-timeouts
+   ;; event
+   #:set-event
+   #:event-self
+   #:event-ptr
+   #:event-string
+   #:event-int
+   ;; object
+   #:detach-object
+   #:destroy-object
+   ;; gui
+   #:*video-initialized*
+   #:init-video-sdl
+   #:destroy-video
+   ;; view
+   #:windows
+   #:*view*
    ;; label
    #:label-new-string
    ;; editable
@@ -29,13 +51,18 @@
    ;; textbox
    #:textbox
    #:textbox-new
+   ;; button
+   #:button-new
    ;; window
    #:window
    #:window-new
    #:window-new-named
    #:window-show
    #:window-set-caption
+   #:window-set-position
    #:window-draw
+   #:hide-window
+   #:next-window
    ;; layouting language
    #:with-widgets
    #:vbox
