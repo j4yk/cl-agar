@@ -37,4 +37,4 @@ If it is a symbol, the slot of element with that name is assumed to
 		 (tailqueue-next element accessor))
 	(list (unless (null-pointer-p element) (list element))
 	      (if (null-pointer-p element) list (push element list))))
-       ((null-pointer-p element) list)))
+       ((null-pointer-p element) (nreverse list)))) ; reverse the list because push adds at the beginning
