@@ -54,3 +54,6 @@
 
 (defcfun ("AG_EditableClearString" editable-clear-string) :void
   (editable editable))
+
+(defcfun ("AG_EditableDupString" editable-dup-string) :string
+  (editable editable))
