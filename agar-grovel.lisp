@@ -10,11 +10,13 @@
 (ctype size "size_t")
 
 (constant (+object-type-max+ "AG_OBJECT_TYPE_MAX"))
+(constant (+object-name-max+ "AG_OBJECT_NAME_MAX"))
 (constant (+event-args-max+ "AG_EVENT_ARGS_MAX"))
 
 (cstruct sdl-event "SDL_Event")
 
-(cstruct object "AG_Object")
+(cstruct object "AG_Object"
+	 (name "name" :type :char :count "AG_OBJECT_NAME_MAX"))
 
 (cstruct tailqueue-head "AG_TAILQ_HEAD(,ag_object)"
 	 (tqh-first "tqh_first" :type :pointer)

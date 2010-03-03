@@ -1,12 +1,13 @@
 (in-package agar)
 
 (define-foreign-class (textbox ag-cffi::textbox t) (widget)
-  ((editable :accessor editable)
-   (text-buffer-ptr :accessor text-buffer-ptr)
-   (text-buffer-size :reader text-buffer-size :initarg :buffer-size :initform 100))
+  ((editable))
   (:documentation "A wrapper for a textbox widget that holds the text buffer"))
 
 (defclass textbox (textbox-class) ())
+
+(defmethod editable ((textbox textbox))
+  (cffi:foreign-slot-value (fp textbox) 'ag-cffi::textbox 'ag-cffi::ed))
 
 (defbitfield textbox-flags
   :multiline
@@ -31,9 +32,7 @@
 (defun textbox-size-hint (textbox hint-str)
   (editable-size-hint (editable textbox) hint-str))
 
-(defmethod initialize-instance :after ((textbox textbox) &key)
-  "Allocates the foreign text buffer and defines a garbage collecting procedure"
-  (setf (editable textbox) (foreign-slot-value (fp textbox) 'ag-cffi::textbox 'ag-cffi::ed)))
+(defmethod initialize-instance :after ((textbox textbox) &key))
 
 (defun foreign-textbox-new (parent flags &optional label-text)
   (if label-text
@@ -48,17 +47,20 @@
 		       :pointer (null-pointer)
 		       textbox)))
 
-(defun textbox-new (parent-widget &key label-text (buffer-size 100) (size-hint "twenty chars        ")
+(defun textbox-new (parent-widget &key label-text (size-hint "twenty chars        ")
 		    init-text flags)
   (let ((textbox (make-instance 'textbox
-				:fp (foreign-textbox-new parent-widget flags label-text)
-				:buffer-size buffer-size)))
+				:fp (foreign-textbox-new parent-widget flags label-text))))
     (when init-text (setf (text textbox) init-text))
     (when size-hint (textbox-size-hint textbox size-hint))
     textbox))
 
+(defmethod textbox-dup-string ((textbox textbox))
+  (editable-dup-string (editable textbox)))
+
 (defmethod text ((textbox textbox))
-  (foreign-string-to-lisp (text-buffer-ptr textbox)))
+  (declare (optimize debug))
+  (textbox-dup-string textbox))
 
 (defmethod (setf text) (text (textbox textbox))
   (textbox-set-string textbox text))

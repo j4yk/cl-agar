@@ -32,9 +32,19 @@ expand-function: function that expands the specification of such widget in the m
 (define-widget-expansion label (text &rest flags)
   `((,name (label-new-string ,parent-widget ,text ,@flags))))
 
-(define-widget-expansion textbox (&key label-text (buffer-size 100) (size-hint "XXXXXXXXXXXXXXX") init-text flags)
-  `((,name (textbox-new ,parent-widget :label-text ,label-text :buffer-size ,buffer-size
+(define-widget-expansion textbox (&key label-text (size-hint "XXXXXXXXXXXXXXX") init-text flags)
+  `((,name (textbox-new ,parent-widget :label-text ,label-text
 			:size-hint ,size-hint :init-text ,init-text :flags ,flags))))
+
+(define-widget-expansion button (label &key flags callback-spec)
+  `((,name (let ((btn (button-new ,parent-widget ,flags ,label)))
+	     ,(when callback-spec
+		    `(set-event btn "button-pushed" ,@(eval callback-spec))) ; eval, damit event-callback erweitert wird
+	     btn))))
+
+(defmacro event-callback (callback fmt &rest event-args)
+  "Stellt Daten für callback-Spezifizierungen in der Layoutsprache bereit"
+  `(list '(cffi:callback ,callback) ,fmt ,@event-args))
 
 (defun expand-widget (parent-widget widget)
   "Expands a single widget specification, including its children widgets,

@@ -24,6 +24,7 @@
    #:timeouts-queued-p
    #:process-timeouts
    ;; event
+   #:event
    #:set-event
    #:event-self
    #:event-ptr
@@ -66,7 +67,9 @@
    #:hide-window
    #:next-window
    ;; layouting language
+   #:event-callback
    #:with-widgets
    #:vbox
    #:hbox
-   #:label))
+   #:label
+   #:button))
