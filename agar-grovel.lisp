@@ -16,7 +16,8 @@
 (cstruct sdl-event "SDL_Event")
 
 (cstruct object "AG_Object"
-	 (name "name" :type :char :count "AG_OBJECT_NAME_MAX"))
+	 (name "name" :type :char :count "AG_OBJECT_NAME_MAX")
+	 (lock "lock" :type :long))
 
 (cstruct tailqueue-head "AG_TAILQ_HEAD(,ag_object)"
 	 (tqh-first "tqh_first" :type :pointer)

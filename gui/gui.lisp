@@ -41,6 +41,11 @@
       (init-core progname init-flags)
       (apply #'init-video-sdl display flags))))
 
+(defun destroy ()
+  (foreign-funcall "AG_Destroy" :void)
+  (setq *video-initialized* nil
+	*initialized* nil))
+
 (defun destroy-video ()
   (foreign-funcall "AG_DestroyVideo" :void)
   (setq *video-initialized* nil))
