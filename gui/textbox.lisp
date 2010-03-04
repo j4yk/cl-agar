@@ -59,8 +59,7 @@
   (editable-dup-string (editable textbox)))
 
 (defmethod text ((textbox textbox))
-  (declare (optimize debug))
-  (textbox-dup-string textbox))
+  (editable-dup-string (editable textbox)))
 
 (defmethod (setf text) (text (textbox textbox))
   (textbox-set-string textbox text))

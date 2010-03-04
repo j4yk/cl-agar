@@ -70,7 +70,7 @@
 (cstruct button "AG_Button")
 
 (cstruct textbox "AG_Textbox"
-	 (ed "ed" :type editable))
+	 (ed "ed" :type :pointer))
 
 (cenum window-alignment
        ((:tl "AG_WINDOW_TL")))
