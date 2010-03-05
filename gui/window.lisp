@@ -42,6 +42,8 @@
 (defcfun ("AG_WindowSetPosition" window-set-position) :void
   (win window) (alignment window-alignment) (cascade :boolean))
 
+(defcfun "Window_Update" :void (window :pointer)) ;
+
 (defun window-draw (window)
   "static __inline__ void AG_WindowDraw(AG_Window *win)
 Render a window to the display (must be enclosed between calls to

@@ -43,3 +43,8 @@
 		 (foreign-bitfield-value 'widget-flags (delete :disabled flags)))
 	   (post-event (null-pointer) widget "widget-enabled" (null-pointer))))
     (unlock-object widget)))
+
+(defcfun "Update_Widget" :void (object :pointer))
+
+(defcfun "Hide_Widget" :void (widget :pointer))
+(defcfun "Show_Widget" :void (widget :pointer))

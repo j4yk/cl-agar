@@ -31,8 +31,12 @@
    #:event-string
    #:event-int
    ;; object
+   #:attach-object
    #:detach-object
+   #:parent-object
    #:destroy-object
+   #:lock-object
+   #:unlock-object
    ;; gui
    #:*video-initialized*
    #:init-video-sdl
@@ -44,6 +48,10 @@
    ;; widget
    #:enable-widget
    #:disable-widget
+   #:hide-widget
+   #:show-widget
+   ;; hbox
+   #:hbox-new
    ;; label
    #:label-new-string
    ;; editable
@@ -69,6 +77,7 @@
    #:window-draw
    #:hide-window
    #:next-window
+   #:window-update
    ;; layouting language
    #:event-callback
    #:with-widgets
