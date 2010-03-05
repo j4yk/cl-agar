@@ -6,6 +6,9 @@
   "Registers a new event handler to service events of type event-name."
   (object object) (event-name :string) (handler :pointer) (fmt :string) &rest)
 
+(defcfun ("AG_PostEvent" post-event) :void
+  (sender :pointer) (receiver :pointer) (event-name :string) (fmt :string) &rest)
+
 (defmacro define-event-accessor (fn-name type variable-data-slot-name &body pre-body)
   `(defun ,fn-name (event ntharg)
      ,@pre-body

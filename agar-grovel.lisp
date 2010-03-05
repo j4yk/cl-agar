@@ -55,6 +55,7 @@
 (cstruct rect2 "AG_Rect2")
 
 (cstruct widget "AG_Widget"
+	 (flags "flags" :type :uint)
 	 (rview "rView" :type rect2))
 
 (cstruct label "AG_Label")

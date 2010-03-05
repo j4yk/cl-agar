@@ -41,6 +41,9 @@
    ;; view
    #:windows
    #:*view*
+   ;; widget
+   #:enable-widget
+   #:disable-widget
    ;; label
    #:label-new-string
    ;; editable
