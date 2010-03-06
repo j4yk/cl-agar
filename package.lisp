@@ -50,6 +50,8 @@
    #:disable-widget
    #:hide-widget
    #:show-widget
+   ;; vbox
+   #:vbox-new
    ;; hbox
    #:hbox-new
    ;; label
