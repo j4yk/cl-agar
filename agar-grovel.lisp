@@ -74,7 +74,15 @@
 	 (ed "ed" :type :pointer))
 
 (cenum window-alignment
-       ((:tl "AG_WINDOW_TL")))
+       ((:tl "AG_WINDOW_TL"))
+       ((:tc "AG_WINDOW_TC"))
+       ((:tr "AG_WINDOW_TR"))
+       ((:ml "AG_WINDOW_ML"))
+       ((:mc "AG_WINDOW_MC"))
+       ((:mr "AG_WINDOW_MR"))
+       ((:bl "AG_WINDOW_BL"))
+       ((:bc "AG_WINDOW_BC"))
+       ((:br "AG_WINDOW_BR")))
 
 (cstruct window "AG_Window"
 	 (windows "windows" :type tailqueue-entry)
