@@ -50,6 +50,8 @@
    #:disable-widget
    #:hide-widget
    #:show-widget
+   #:expand
+   #:expand-horiz
    ;; vbox
    #:vbox-new
    ;; hbox

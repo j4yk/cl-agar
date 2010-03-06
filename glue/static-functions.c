@@ -27,3 +27,15 @@ Show_Widget(void *wid)
 {
   AG_WidgetShow(wid);
 }
+
+void
+Expand(void *wid)
+{
+  AG_Expand(wid);
+}
+
+void
+Expand_Horiz(void *wid)
+{
+  AG_ExpandHoriz(wid);
+}
