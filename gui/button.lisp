@@ -7,7 +7,3 @@
 
 (defcfun ("AG_ButtonNew" button-new) button
   (parent widget) (flags button-flags) (label :string))
-
-(defun new-button-fn (parent label click-handler-function &rest flags)
-  ;; to be done
-  )

@@ -16,3 +16,15 @@
 		   label-flags flags
 		   :string text
 		   label))
+
+(defmacro new-polled-label (parent-widget flags format &rest bindings)
+  `(foreign-funcall "AG_LabelNewPolled"
+		    widget ,parent-widget
+		    label-flags ,flags
+		    :string ,format
+		    ,@(mapcan #'(lambda (b) `(:pointer ,b))
+			      bindings)
+		    label))
+
+(defcfun ("AG_LabelSizeHint" size-hint-label) :void
+  (label label) (n-lines :uint) (text :string))
