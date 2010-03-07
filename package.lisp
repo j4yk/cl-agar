@@ -47,7 +47,6 @@
    #:*video-initialized*
    #:init-video-sdl
    #:destroy-video
-   #:text-msg
    ;; view
    #:windows
    #:*view*
@@ -111,6 +110,9 @@
    #:next-window
    #:window-update
    #:set-window-geometry
+   ;; text
+   #:text-msg
+   #:prompt-options
    ;; layouting language
    #:event-callback
    #:with-widgets
