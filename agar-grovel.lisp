@@ -73,6 +73,9 @@
 (cstruct textbox "AG_Textbox"
 	 (ed "ed" :type :pointer))
 
+(cstruct radio "AG_Radio"
+	 (oversel "oversel" :type :int))
+
 (cstruct tlist "AG_Tlist"
 	 (nitems "nitems" :type :int)
 	 (items "items" :type tailqueue-head))

@@ -34,6 +34,7 @@
 				     (:file button :depends-on (widget))
 				     (:file editable :depends-on (widget))
 				     (:file textbox :depends-on (widget))
+				     (:file radio :depends-on (widget))
 				     (:file tlist :depends-on (widget))
 				     (:file ucombo :depends-on (widget))
 				     (:file window :depends-on (widget view))

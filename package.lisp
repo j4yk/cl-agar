@@ -81,6 +81,12 @@
    #:button-new
    #:button-new-fn
    #:button-text
+   ;; radio
+   #:new-radio
+   #:new-radio-fn
+   #:new-radio-int
+   #:new-radio-uint
+   #:set-radio-changed-event
    ;; tlist
    #:tlist
    #:tlist-begin
