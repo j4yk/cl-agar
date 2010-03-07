@@ -66,6 +66,7 @@
    #:label-new-string
    #:size-hint-label
    #:new-polled-label
+   #:new-label
    ;; editable
    #:editable
    #:editable-new* #:editable-new #:editbable-bind

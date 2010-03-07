@@ -26,5 +26,10 @@
 			      bindings)
 		    label))
 
+(defmacro new-label (parent flags format &rest bindings)
+  (if (null bindings)
+      `(label-new-string ,parent ,format ,@flags)
+      `(new-polled-label ,parent ,flags ,format ,@bindings)))
+
 (defcfun ("AG_LabelSizeHint" size-hint-label) :void
   (label label) (n-lines :uint) (text :string))
