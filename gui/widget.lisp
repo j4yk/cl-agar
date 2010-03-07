@@ -49,4 +49,5 @@
 (defcfun "Hide_Widget" :void (widget :pointer))
 (defcfun "Show_Widget" :void (widget :pointer))
 (defcfun "Expand_Horiz" :void (widget :pointer))
+(defcfun "Expand_Vert" :void (widget :pointer))
 (defcfun "Expand" :void (widget :pointer))

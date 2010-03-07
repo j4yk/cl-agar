@@ -57,6 +57,7 @@
    #:show-widget
    #:expand
    #:expand-horiz
+   #:expand-vert
    ;; vbox
    #:vbox-new
    ;; hbox

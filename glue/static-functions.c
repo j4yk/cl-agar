@@ -39,3 +39,9 @@ Expand_Horiz(void *wid)
 {
   AG_ExpandHoriz(wid);
 }
+
+void
+Expand_Vert(void *wid)
+{
+  AG_ExpandVert(wid);
+}
