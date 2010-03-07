@@ -7,3 +7,7 @@
 
 (defcfun ("AG_ButtonNew" button-new) button
   (parent widget) (flags button-flags) (label :string))
+
+(defcfun ("AG_ButtonNewFn" button-new-fn) button
+  (parent widget) (flags button-flags) (caption :string)
+  (fn :pointer) (fmt :string) &rest)

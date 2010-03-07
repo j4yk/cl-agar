@@ -79,6 +79,25 @@
    #:textbox-new
    ;; button
    #:button-new
+   #:button-new-fn
+   ;; tlist
+   #:tlist
+   #:tlist-begin
+   #:tlist-end
+   #:tlist-add
+   #:tlist-add-ptr
+   #:tlist-select
+   #:tlist-select-ptr
+   #:tlist-items
+   #:tlist-n-items #:tlist-items-count
+   #:tlist-item
+   #:tlist-item-ptr
+   #:tlist-item-selected-p
+   #:tlist-item-flags
+   ;; ucombo
+   #:new-ucombo
+   #:new-polled-ucombo
+   #:ucombo-list
    ;; window
    #:window
    #:window-new

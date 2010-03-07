@@ -20,3 +20,21 @@ Unlock_Object(AG_Object *obj)
 {
   AG_ObjectLock(obj);
 }
+
+void
+Tlist_Begin(AG_Tlist *tlist)
+{
+  AG_TlistBegin(tlist);
+}
+
+void
+Tlist_End(AG_Tlist *tlist)
+{
+  AG_TlistEnd(tlist);
+}
+
+void
+Set_Window_Geometry(AG_Window *win, int x, int y, int w, int h)
+{
+  AG_WindowSetGeometry(win, x, y, w, h);
+}

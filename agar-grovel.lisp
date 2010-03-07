@@ -73,6 +73,20 @@
 (cstruct textbox "AG_Textbox"
 	 (ed "ed" :type :pointer))
 
+(cstruct tlist "AG_Tlist"
+	 (nitems "nitems" :type :int)
+	 (items "items" :type tailqueue-head))
+
+(cstruct tlist-item "AG_TlistItem"
+	 (ptr "p1" :type :pointer)
+	 (p1 "p1" :type :pointer)
+	 (selected "selected" :type :boolean)
+	 (flags "flags" :type :uint))
+
+(cstruct ucombo "AG_UCombo"
+	 (list "list" :type :pointer)
+	 (button "button" :type :pointer))
+
 (cenum window-alignment
        ((:tl "AG_WINDOW_TL"))
        ((:tc "AG_WINDOW_TC"))
