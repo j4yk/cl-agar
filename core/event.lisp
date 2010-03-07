@@ -2,13 +2,6 @@
 
 (define-foreign-class (event ag-cffi::event) ())
 
-(defcfun ("AG_SetEvent" set-event) event
-  "Registers a new event handler to service events of type event-name."
-  (object object) (event-name :string) (handler :pointer) (fmt :string) &rest)
-
-(defcfun ("AG_PostEvent" post-event) :void
-  (sender :pointer) (receiver :pointer) (event-name :string) (fmt :string) &rest)
-
 (defmacro define-event-accessor (fn-name type variable-data-slot-name &body pre-body)
   `(defun ,fn-name (event ntharg)
      ,@pre-body
@@ -29,3 +22,21 @@
 (defun event-self (event)
   "AG_SELF(), returns a pointer to the AG_Object receiveing the event"
   (event-ptr event 0))
+
+(defcfun ("AG_SetEvent" set-event) event
+  "Registers a new event handler to service events of type event-name."
+  (object object) (event-name :string) (handler :pointer) (fmt :string) &rest)
+
+(defmacro define-set-event-macro (event-name)
+  (let* ((symbol (if (stringp event-name)
+		     (intern (string-upcase event-name))
+		     event-name))
+	 (string (if (stringp event-name)
+		     event-name
+		     (string-downcase (symbol-name event-name))))
+	 (fn-name (conc-symbols 'set- symbol '-event)))
+    `(defmacro ,fn-name (object callback &optional (fmt "") &rest varargs)
+       `(set-event ,object ,',string ,callback ,fmt ,@varargs))))
+
+(defcfun ("AG_PostEvent" post-event) :void
+  (sender :pointer) (receiver :pointer) (event-name :string) (fmt :string) &rest)
