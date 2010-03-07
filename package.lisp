@@ -79,6 +79,7 @@
    ;; button
    #:button-new
    #:button-new-fn
+   #:button-text
    ;; tlist
    #:tlist
    #:tlist-begin
