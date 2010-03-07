@@ -26,10 +26,16 @@
    ;; event
    #:event
    #:set-event
+   #:post-event
    #:event-self
    #:event-ptr
    #:event-string
    #:event-int
+   ;; variables
+   #:bind-pointer
+   #:bind-int
+   #:bind-float
+   #:bind-double
    ;; object
    #:attach-object
    #:detach-object
