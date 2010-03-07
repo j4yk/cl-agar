@@ -8,7 +8,8 @@
   :nobackground :noupdaterect
   :focusonattach :hmaximize :vmazimize
   :nomove :noclipping
-  :modkeyevents)
+  :modkeyevents
+  (:nobuttons #x1c00))
 
 (defctype window-alignment ag-cffi::window-alignment)
 
@@ -42,7 +43,13 @@
 (defcfun ("AG_WindowSetPosition" window-set-position) :void
   (win window) (alignment window-alignment) (cascade :boolean))
 
-(defcfun "Window_Update" :void (window :pointer)) ;
+(defcfun ("AG_WindowSetPadding" set-window-padding) :void
+  (window window) (lpad :int) (rpad :int) (tpad :int) (bpad :int))
+
+(defcfun "Set_Window_Geometry" :void
+  (window window) (x :int) (y :int) (w :int) (h :int))
+
+(defcfun "Window_Update" :void (window :pointer))
 
 (defun window-draw (window)
   "static __inline__ void AG_WindowDraw(AG_Window *win)

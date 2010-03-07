@@ -105,10 +105,12 @@
    #:window-show
    #:window-set-caption
    #:window-set-position
+   #:set-window-padding
    #:window-draw
    #:hide-window
    #:next-window
    #:window-update
+   #:set-window-geometry
    ;; layouting language
    #:event-callback
    #:with-widgets
