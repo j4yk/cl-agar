@@ -50,18 +50,6 @@
   (foreign-funcall "AG_DestroyVideo" :void)
   (setq *video-initialized* nil))
 
-(defcenum text-msg-title
-  (:error)
-  (:warning)
-  (:info))
-
-(defun text-msg (title format-string &rest format-args)
-  "void AG_TextMsg(enum ag_text_msg_title title, const char *format, ...)"
-  (let ((message (apply #'format nil format-string format-args)))
-    (foreign-funcall "AG_TextMsg"
-		     text-msg-title title
-		     :string message :void)))
-
 (defcfun ("AG_EventLoop_FixedFPS" event-loop) :void)
 
 (defcfun ("AG_BeginRendering" begin-rendering) :void)
