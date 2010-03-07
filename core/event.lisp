@@ -38,5 +38,14 @@
     `(defmacro ,fn-name (object callback &optional (fmt "") &rest varargs)
        `(set-event ,object ,',string ,callback ,fmt ,@varargs))))
 
+(defmacro define-set-event-macros (&rest event-names)
+  (labels ((def (event-names acc)
+	     (if (null event-names)
+		 acc
+		 (def (cdr event-names)
+		     (cons `(define-set-event-macro ,(car event-names)) acc)))))
+    `(progn
+       ,@(def event-names nil))))	       
+
 (defcfun ("AG_PostEvent" post-event) :void
   (sender :pointer) (receiver :pointer) (event-name :string) (fmt :string) &rest)
