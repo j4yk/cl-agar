@@ -97,6 +97,7 @@
    #:new-ucombo
    #:new-polled-ucombo
    #:ucombo-list
+   #:ucombo-button
    ;; window
    #:window
    #:window-new
