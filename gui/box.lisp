@@ -11,11 +11,17 @@
 
 (set-flag-function "AG_BoxSetHomogenous" box-set-homogenous box)
 
-(defcfun ("AG_BoxSetPadding" box-set-padding) :void
+(defcfun ("AG_BoxSetPadding" set-box-padding) :void
   (box box) (padding :int))
 
-(defcfun ("AG_BoxSetSpacing" box-set-spacing) :void
+(defcfun ("AG_BoxSetSpacing" set-box-spacing) :void
   (box box) (spacing :int))
+
+(defcfun ("AG_BoxSetLabel" set-box-label) :void
+  (box box) (label :string))
+
+(defcfun ("AG_BoxSetDepth" set-box-depth) :void
+  (box box) (depth :int))
 
 (defcenum box-type
   :horiz

@@ -58,6 +58,11 @@
    #:expand
    #:expand-horiz
    #:expand-vert
+   ;; boxes
+   #:set-box-label
+   #:set-box-depth
+   #:set-box-spacing
+   #:set-box-padding
    ;; vbox
    #:vbox-new
    ;; hbox
