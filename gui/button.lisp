@@ -12,6 +12,11 @@
   (parent widget) (flags button-flags) (caption :string)
   (fn :pointer) (fmt :string) &rest)
 
+(defmacro new-button (parent flags label &optional fn (fmt "") &rest varargs)
+  (if fn
+      `(button-new-fn ,parent ,flags ,label ,fn ,fmt ,@varargs)
+      `(button-new ,parent ,flags ,label)))
+
 (defcfun ("AG_ButtonText" button-text) :void
   (button button) (text :string))
 

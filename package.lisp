@@ -86,6 +86,7 @@
    ;; button
    #:button-new
    #:button-new-fn
+   #:new-button
    #:button-text
    ;; radio
    #:new-radio
