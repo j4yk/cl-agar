@@ -122,7 +122,7 @@
    #:window-new-named
    #:window-show
    #:window-set-caption
-   #:window-set-position
+   #:set-window-position
    #:set-window-padding
    #:window-draw
    #:hide-window

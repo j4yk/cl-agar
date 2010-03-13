@@ -40,7 +40,7 @@
 (defcfun ("AG_WindowHide" hide-window) :void
   (window window))
 
-(defcfun ("AG_WindowSetPosition" window-set-position) :void
+(defcfun ("AG_WindowSetPosition" set-window-position) :void
   (win window) (alignment window-alignment) (cascade :boolean))
 
 (defcfun ("AG_WindowSetPadding" set-window-padding) :void
@@ -60,3 +60,5 @@ The View VFS and Window object must be locked."
     (widget-draw window)
     (unless (opengl-p *view*)
       (view-update-fb (rview window)))))
+
+(define-set-event-macros window-shown)
