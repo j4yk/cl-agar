@@ -74,6 +74,7 @@
    #:size-hint-label
    #:new-polled-label
    #:new-label
+   #:label-string
    ;; editable
    #:editable
    #:editable-new* #:editable-new #:editbable-bind

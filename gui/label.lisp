@@ -33,3 +33,6 @@
 
 (defcfun ("AG_LabelSizeHint" size-hint-label) :void
   (label label) (n-lines :uint) (text :string))
+
+(defcfun ("AG_LabelString" label-string) :void
+  (label label) (string :string))
