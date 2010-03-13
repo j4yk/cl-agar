@@ -58,6 +58,8 @@
    #:expand
    #:expand-horiz
    #:expand-vert
+   #:widget-x
+   #:widget-y
    ;; boxes
    #:set-box-label
    #:set-box-depth

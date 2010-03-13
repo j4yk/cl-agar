@@ -3,6 +3,8 @@
 (define-foreign-class (widget ag-cffi::widget) (object))
 
 (define-slot-accessors widget
+  (ag-cffi::x widget-x :writable)
+  (ag-cffi::y widget-y :writable)
   (ag-cffi::flags widget-flags :writable)
   (ag-cffi::rview view-rectangle rview))
 
