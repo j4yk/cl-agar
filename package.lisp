@@ -34,6 +34,11 @@
    #:tailqueue-remove
    #:tailqueue-replace
    ;; timeout
+   #:timeout
+   #:set-timeout
+   #:schedule-timeout
+   #:delete-timeout
+   #:define-timeout-callback
    #:timeouts-queued-p
    #:process-timeouts
    ;; event

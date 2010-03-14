@@ -29,9 +29,9 @@
 	 (tqe-prev "tqe_prev" :type :pointer))
 
 (constantenum timeout-flags
-	      ((:cancel-on-detach "AG_CANCEL_ONDETACH")
-	       (:cancel-on-load "AG_CANCEL_ONLOAD")
-	       (:queued "AG_TIMEOUT_QUEUED")))
+	      ((:cancel-on-detach "AG_CANCEL_ONDETACH"))
+	      ((:cancel-on-load "AG_CANCEL_ONLOAD"))
+	      ((:queued "AG_TIMEOUT_QUEUED")))
 
 (cstruct timeout "AG_Timeout"
 	 (fn "fn" :type :pointer)
