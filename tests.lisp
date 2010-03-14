@@ -23,7 +23,7 @@
 	 (if (< (rcur *view*) 1)
 	     (setf (rcur *view*) 1)))
 	((not (null-pointer-p (tailqueue-first *timeout-object-queue*))) ; advance the timing wheels
-	 (process-timeout tr2))))))
+	 (process-timeouts tr2))))))
 
 (defmacro test-run ((&body init-body) (sdl-event-arg &body idle-body))
   `(sdl:with-init ()
