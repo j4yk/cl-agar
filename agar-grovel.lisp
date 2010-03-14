@@ -19,6 +19,7 @@
 	 (name "name" :type :char :count "AG_OBJECT_NAME_MAX")
 	 (lock "lock" :type :long))
 
+;; because Lisp does not care about the pointer types, ag_object is used here
 (cstruct tailqueue-head "AG_TAILQ_HEAD(,ag_object)"
 	 (tqh-first "tqh_first" :type :pointer)
 	 (tqh-last "tqh_last" :type :pointer))

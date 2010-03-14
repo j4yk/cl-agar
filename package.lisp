@@ -19,7 +19,20 @@
    #:process-event
    #:event-loop
    ;; queues
+   #:tailqueue-first
+   #:tailqueue-last
+   #:tailqueue-end
+   #:tailqueue-empty-p
+   #:tailqueue-next
+   #:tailqueue-prev
    #:tailqueue-to-list
+   #:tailqueue-init
+   #:tailqueue-insert-head
+   #:tailqueue-insert-tail
+   #:tailqueue-insert-after
+   #:tailqueue-insert-before
+   #:tailqueue-remove
+   #:tailqueue-replace
    ;; timeout
    #:timeouts-queued-p
    #:process-timeouts
