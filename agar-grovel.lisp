@@ -28,6 +28,19 @@
 	 (tqe-next "tqe_next" :type :pointer)
 	 (tqe-prev "tqe_prev" :type :pointer))
 
+(constantenum timeout-flags
+	      ((:cancel-on-detach "AG_CANCEL_ONDETACH")
+	       (:cancel-on-load "AG_CANCEL_ONLOAD")
+	       (:queued "AG_TIMEOUT_QUEUED")))
+
+(cstruct timeout "AG_Timeout"
+	 (fn "fn" :type :pointer)
+	 (arg "arg" :type :pointer)
+	 (flags "flags" :type :uint)
+	 (ticks "ticks" :type :uint32)
+	 (ival "ival" :type :uint32)
+	 (timeouts "timeouts" :type tailqueue-entry))
+
 (cstruct object-class "AG_ObjectClass"
 	 (name "name" :type :pointer)
 	 (subclasses "subclasses" :type tailqueue-entry)
