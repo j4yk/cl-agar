@@ -142,6 +142,7 @@
    #:next-window
    #:window-update
    #:set-window-geometry
+   #:set-window-shown-event
    ;; text
    #:text-msg
    #:prompt-options
