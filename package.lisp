@@ -18,6 +18,8 @@
    #:init-core
    #:process-event
    #:event-loop
+   ;; time
+   #:get-ticks
    ;; queues
    #:tailqueue-first
    #:tailqueue-last

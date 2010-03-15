@@ -23,6 +23,7 @@
 				     (:file queues)
 				     (:file variable)
 				     (:file event :depends-on (variable))
+				     (:file time)
 				     (:file timeout :depends-on (queues))
 				     (:file object)))
 	       (:module gui :depends-on (core)

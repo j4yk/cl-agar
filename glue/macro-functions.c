@@ -21,6 +21,12 @@ Unlock_Object(AG_Object *obj)
   AG_ObjectLock(obj);
 }
 
+Uint32
+Get_Ticks(void)
+{
+  return AG_GetTicks();
+}
+
 void
 Tlist_Begin(AG_Tlist *tlist)
 {
