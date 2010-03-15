@@ -39,6 +39,10 @@
    #:schedule-timeout
    #:delete-timeout
    #:define-timeout-callback
+   #:lock-timeouts
+   #:unlock-timeouts
+   #:with-locked-timeouts
+   #:timeout-is-scheduled
    #:timeouts-queued-p
    #:process-timeouts
    ;; event

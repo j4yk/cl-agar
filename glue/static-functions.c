@@ -4,6 +4,24 @@
 /* This file is for functions that shall surround calls to static
    inline C functions, because CFFI cannot bind to those */
 
+int
+Timeout_Is_Scheduled(void *obj, AG_Timeout *to)
+{
+  return (AG_TimeoutIsScheduled(obj, to));
+}
+
+void
+Lock_Timeouts(void *p)
+{
+  AG_LockTimeouts(p);
+}
+
+void
+Unlock_Timeouts(void *p)
+{
+  AG_UnlockTimeouts(p);
+}
+
 void
 Window_Update(AG_Window *win)
 {

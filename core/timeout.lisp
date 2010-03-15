@@ -38,6 +38,25 @@ interface remains consistent across different timing schemes."
   AG_DelTimeout before AG_SchedTimeout when re-scheduling an event."
   (obj :pointer) (timeout timeout))
 
+(defcfun "Timeout_Is_Scheduled" :boolean
+  "Returns t if the given timeout is currently scheduled for execution.
+The timeouts must have been locked by the caller of the function"
+  (obj :pointer) (timeout timeout))
+
+(defcfun "Lock_Timeouts" :void
+  "Locks the timeouts associated with obj"
+  (obj :pointer))
+
+(defcfun "Unlock_Timeouts" :void
+  "Unlocks the timeouts associated with obj"
+  (obj :pointer))
+
+(defmacro with-locked-timeouts (obj &body body)
+  `(progn
+     (lock-timeouts ,obj)
+     (unwind-protect (progn ,@body)
+       (unlock-timeouts ,obj))))
+
 (defmacro define-timeout-callback (name-and-options (object ival arg) &body body)
   `(defcallback ,name-and-options :uint32
        ((,object :pointer) (,ival :uint32) (,arg :pointer))
