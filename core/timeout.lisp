@@ -10,6 +10,13 @@
 (define-foreign-class (timeout ag-cffi::timeout) ()
   ())
 
+(define-slot-accessors timeout
+  (ag-cffi::ival timeout-ival)
+  (ag-cffi::ticks timeout-ticks)
+  (ag-cffi::flags timeout-flags)
+  (ag-cffi::timeouts timeout-timeouts))
+  
+
 (defcfun ("AG_SetTimeout" set-timeout) :void
   "Initializes a pre-allocted AG_Timeout struture
 using the specified callback function and argument"

@@ -15,10 +15,6 @@
 
 (cstruct sdl-event "SDL_Event")
 
-(cstruct object "AG_Object"
-	 (name "name" :type :char :count "AG_OBJECT_NAME_MAX")
-	 (lock "lock" :type :long))
-
 ;; because Lisp does not care about the pointer types, ag_object is used here
 (cstruct tailqueue-head "AG_TAILQ_HEAD(,ag_object)"
 	 (tqh-first "tqh_first" :type :pointer)
@@ -27,6 +23,12 @@
 (cstruct tailqueue-entry "AG_TAILQ_ENTRY(ag_object)"
 	 (tqe-next "tqe_next" :type :pointer)
 	 (tqe-prev "tqe_prev" :type :pointer))
+
+(cstruct object "AG_Object"
+	 (name "name" :type :char :count "AG_OBJECT_NAME_MAX")
+	 (tobjs "tobjs" :type tailqueue-entry)
+	 (timeouts "timeouts" :type tailqueue-head)
+	 (lock "lock" :type :long))
 
 (constantenum timeout-flags
 	      ((:cancel-on-detach "AG_CANCEL_ONDETACH"))

@@ -37,6 +37,10 @@
    #:tailqueue-replace
    ;; timeout
    #:timeout
+   #:timeout-ival
+   #:timeout-ticks
+   #:timeout-flags
+   #:timeout-timeouts
    #:set-timeout
    #:schedule-timeout
    #:delete-timeout
@@ -67,6 +71,8 @@
    #:destroy-object
    #:lock-object
    #:unlock-object
+   #:object-timeouts
+   #:object-tobjs
    ;; gui
    #:*video-initialized*
    #:init-video-sdl

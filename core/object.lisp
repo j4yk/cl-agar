@@ -2,7 +2,9 @@
 
 (define-foreign-class (object ag-cffi::object) ())
 
-(define-slot-accessors object nil)
+(define-slot-accessors object
+  (ag-cffi::timeouts object-timeouts)
+  (ag-cffi::tobjs object-tobjs))
 
 (defcfun ("AG_ObjectAttach" attach-object) :void
   (parentp :pointer) (pchild :pointer))
