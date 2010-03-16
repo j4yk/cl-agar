@@ -1,0 +1,18 @@
+--- core/timeout.c	2010-03-16 18:46:30.702559589 +0100
++++ core/timeout.c_	2010-03-16 18:46:01.618561465 +0100
+@@ -77,13 +77,13 @@ AG_ScheduleTimeout(void *p, AG_Timeout *
+ 		TAILQ_REMOVE(&ob->timeouts, to, timeouts);
+ 	}
+ 	TAILQ_FOREACH(toAfter, &ob->timeouts, timeouts) {
+-		if (dt < toAfter->ticks) {
++		if (t < toAfter->ticks) {
+ 			TAILQ_INSERT_BEFORE(toAfter, to, timeouts);
+ 			break;
+ 		}
+ 	}
+ 	if (toAfter == TAILQ_END(&ob->timeouts)) {
+-		TAILQ_INSERT_HEAD(&ob->timeouts, to, timeouts);
++		TAILQ_INSERT_TAIL(&ob->timeouts, to, timeouts);
+ 	}
+ 
+ 	to->ticks = t;
