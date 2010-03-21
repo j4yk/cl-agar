@@ -38,10 +38,10 @@
   (box-set-homogenous vbox homogenous-p))
 
 (defun vbox-set-padding (vbox padding)
-  (box-set-padding vbox padding))
+  (set-box-padding vbox padding))
 
 (defun vbox-set-spacing (vbox spacing)
-  (box-set-spacing vbox spacing))
+  (set-box-spacing vbox spacing))
 
 (defun vbox-new (parent &rest flags)
   ;; according to the macro AG_VBoxNew
@@ -62,10 +62,10 @@
   (box-set-homogenous hbox homogenous-p))
 
 (defun hbox-set-padding (hbox padding)
-  (box-set-padding hbox padding))
+  (set-box-padding hbox padding))
 
 (defun hbox-set-spacing (hbox spacing)
-  (box-set-spacing hbox spacing))
+  (set-box-spacing hbox spacing))
 
 (defun hbox-new (parent &rest flags)
   ;; according to the macro AG_VBoxNew
