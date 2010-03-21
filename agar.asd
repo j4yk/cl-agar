@@ -22,6 +22,7 @@
 			:components ((:file core)
 				     (:file queues)
 				     (:file variable)
+				     (:file list)
 				     (:file event :depends-on (variable))
 				     (:file time)
 				     (:file timeout :depends-on (queues))

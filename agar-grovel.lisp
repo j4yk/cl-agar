@@ -65,6 +65,10 @@
 	 (type "type" :type variable-type)
 	 (data "data" :type variable-data))
 
+(cstruct agar-list "AG_List"
+	 (n "n" :type :int)
+	 (v "v" :type :pointer))
+
 (cstruct event "AG_Event"
 	 (argv "argv" :type variable :count "AG_EVENT_ARGS_MAX"))
 
@@ -130,5 +134,6 @@
 	 (rcur "rCur" :type :int)
 	 (rnom "rNom" :type :uint)
 	 (opengl "opengl" :type :boolean)
+	 (Lmodal "Lmodal" :type :pointer)
 	 (windows "windows" :type tailqueue-head))
 	 

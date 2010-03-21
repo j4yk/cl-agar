@@ -35,6 +35,9 @@
    #:tailqueue-insert-before
    #:tailqueue-remove
    #:tailqueue-replace
+   ;; list
+   #:agar-list-n #:agar-list-count
+   #:agar-list-v #:agar-list-items
    ;; timeout
    #:timeout
    #:timeout-ival
@@ -79,6 +82,7 @@
    #:destroy-video
    ;; view
    #:windows
+   #:lmodal
    #:*view*
    ;; widget
    #:enable-widget
