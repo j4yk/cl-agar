@@ -20,4 +20,7 @@
 (defcfun ("AG_ButtonText" button-text) :void
   (button button) (text :string))
 
+(defcfun ("AG_ButtonSetPadding" set-button-padding) :void
+  (button button) (lpad :int) (rpad :int) (tpad :int) (bpad :int))
+
 (define-set-event-macros button-pushed)

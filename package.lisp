@@ -125,6 +125,7 @@
    #:button-new-fn
    #:new-button
    #:button-text
+   #:set-button-padding
    ;; radio
    #:new-radio
    #:new-radio-fn
