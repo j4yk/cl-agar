@@ -18,3 +18,5 @@
 
 (defcfun ("AG_UComboNewPolled" new-polled-ucombo) ucombo
   (parent :pointer) (flags ucombo-flags) (fn :pointer) (fmt :string) &rest)
+
+(define-set-event-macros ucombo-selected)

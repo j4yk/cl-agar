@@ -150,6 +150,7 @@
    #:new-polled-ucombo
    #:ucombo-list
    #:ucombo-button
+   #:set-ucombo-selected-event
    ;; window
    #:window
    #:window-new
