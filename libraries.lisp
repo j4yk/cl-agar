@@ -16,11 +16,12 @@
   (:unix "libjpeg.so"))
 
 (define-foreign-library agar-glue
-  (:unix "libagar-glue.so"))
+  (:unix "libclagar-glue.so"))
 
 (use-foreign-library jpeg)
 (use-foreign-library freetype)
 (use-foreign-library agar-core)
 (use-foreign-library agar-gui)
 (push (merge-pathnames "") cffi:*foreign-library-directories*)
+(push (pathname "/usr/local/lib/") cffi:*foreign-library-directories*)
 (use-foreign-library agar-glue)
