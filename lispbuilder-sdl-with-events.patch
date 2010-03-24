@@ -1,0 +1,22 @@
+Index: sdl/events.lisp
+===================================================================
+--- sdl/events.lisp	(Revision 1464)
++++ sdl/events.lisp	(Arbeitskopie)
+@@ -353,7 +353,7 @@
+   `(progn
+      ,@forms))
+ 
+-(defmacro with-events ((&optional (type :poll)) &body events)
++(defmacro with-events ((&optional (type :poll) (event-var nil)) &body events)
+   "`WITH-EVENTS` is a convenience macro for managing the main game loop. It processes 
+ incoming SDL events and limits the game loop to the specified number of frames 
+ per second.
+@@ -673,7 +673,7 @@
+         T\)
+      \(:IDLE \(\)
+         ... \)\)"
+-  (let ((quit (gensym "quit")) (sdl-event (gensym "sdl-event"))
++  (let ((quit (gensym "quit")) (sdl-event (or event-var (gensym "sdl-event")))
+ 	(idle-func (gensym "idle-func")))
+     `(let ((,sdl-event (new-event))
+            (,quit nil)
