@@ -120,6 +120,7 @@
    ;; textbox
    #:textbox
    #:textbox-new
+   #:textbox-size-hint
    ;; button
    #:button-new
    #:button-new-fn
